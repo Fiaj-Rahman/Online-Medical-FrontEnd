@@ -1,0 +1,27 @@
+/* Parallax effect CSS */
+.parallax {
+    background-attachment: fixed;
+  }
+
+  .parallax h1, .parallax p {
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Subtle shadow for better contrast */
+  }
+  
+  .parallax p {
+    opacity: 0;  /* Hide initially */
+    transition: opacity 1s ease-in-out;
+  }
+  
+  /* Add a fade-in effect */
+  .parallax p[data-aos] {
+    opacity: 1; /* Make text visible once animation is triggered */
+  }
+  
+  
+  /* Optional: Disable parallax effect on small screens */
+  @media (max-width: 768px) {
+    .parallax {
+      background-attachment: scroll; /* Disable parallax on mobile */
+    }
+  }
+  

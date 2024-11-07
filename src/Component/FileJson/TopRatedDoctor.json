@@ -1,0 +1,92 @@
+[
+    {
+        "id": 1,
+        "name": "Dr. John Doe",
+        "specialization": "Cardiologist",
+        "rating": 5,
+        "image": "./doctor1.jpg",
+        "contact": "+1 234 567 890",
+        "location": "New York, USA"
+    },
+    {
+        "id": 2,
+        "name": "Dr. Jane Smith",
+        "specialization": "Dermatologist",
+        "rating": 4,
+        "image": "./doctor1.jpg",
+        "contact": "+1 987 654 321",
+        "location": "Los Angeles, USA"
+    },
+    {
+        "id": 3,
+        "name": "Dr. Alice Brown",
+        "specialization": "Orthopedic Surgeon",
+        "rating": 4,
+        "image": "./doctor1.jpg",
+        "contact": "+1 555 123 456",
+        "location": "Chicago, USA"
+    },
+    {
+        "id": 4,
+        "name": "Dr. Michael Green",
+        "specialization": "Neurologist",
+        "rating": 5,
+        "image": "./doctor1.jpg",
+        "contact": "+1 444 567 890",
+        "location": "San Francisco, USA"
+    },
+    {
+        "id": 5,
+        "name": "Dr. Emily White",
+        "specialization": "Pediatrician",
+        "rating": 5,
+        "image": "./doctor1.jpg",
+        "contact": "+1 333 987 654",
+        "location": "Miami, USA"
+    },
+    {
+        "id": 6,
+        "name": "Dr. David Johnson",
+        "specialization": "Psychiatrist",
+        "rating": 3,
+        "image": "./doctor1.jpg",
+        "contact": "+1 222 765 432",
+        "location": "Houston, USA"
+    },
+    {
+        "id": 7,
+        "name": "Dr. Laura Lee",
+        "specialization": "Obstetrician-Gynecologist",
+        "rating": 5,
+        "image": "./doctor1.jpg",
+        "contact": "+1 888 123 456",
+        "location": "Boston, USA"
+    },
+    {
+        "id": 8,
+        "name": "Dr. James Wilson",
+        "specialization": "Endocrinologist",
+        "rating": 4,
+        "image": "./doctor1.jpg",
+        "contact": "+1 777 654 321",
+        "location": "Seattle, USA"
+    },
+    {
+        "id": 9,
+        "name": "Dr. Olivia Miller",
+        "specialization": "Plastic Surgeon",
+        "rating": 5,
+        "image": "./doctor1.jpg",
+        "contact": "+1 999 123 456",
+        "location": "Las Vegas, USA"
+    },
+    {
+        "id": 10,
+        "name": "Dr. Robert Harris",
+        "specialization": "Gastroenterologist",
+        "rating": 4,
+        "image": "./doctor1.jpg",
+        "contact": "+1 444 999 111",
+        "location": "Denver, USA"
+    }
+]

@@ -1,0 +1,112 @@
+[
+  {
+      "id": 1,
+      "image": "https://i.ibb.co/cYjKLdG/08.jpg",
+      "title": "The Importance of Regular Health Checkups",
+      "description": "Regular health checkups are crucial for early detection and prevention of diseases. Learn how often you should visit your doctor and what to expect during a checkup.",
+      "username": "Dr. Sarah Johnson",
+      "userImage": "https://i.ibb.co/mC9Dyyk/photo-2024-05-11-19-01-05-modified.png",
+      "date": "2024-10-20",
+      "category": "Health Tips",
+      "views": 120
+  },
+  {
+      "id": 2,
+      "image": "https://i.ibb.co/cYjKLdG/08.jpg",
+      "title": "Top 10 Tips for a Healthier Lifestyle",
+      "description": "Discover simple and effective lifestyle changes you can make today to improve your overall health and well-being.",
+      "username": "Jane Doe",
+      "userImage": "https://i.ibb.co/mC9Dyyk/photo-2024-05-11-19-01-05-modified.png",
+      "date": "2024-10-15",
+      "category": "Lifestyle",
+      "views": 180
+  },
+  {
+      "id": 3,
+      "image": "https://i.ibb.co/cYjKLdG/08.jpg",
+      "title": "Understanding Mental Health: A Comprehensive Guide",
+      "description": "Mental health is just as important as physical health. This guide covers key aspects of mental health and how to seek help.",
+      "username": "Dr. Alex Smith",
+      "userImage": "https://i.ibb.co/mC9Dyyk/photo-2024-05-11-19-01-05-modified.png",
+      "date": "2024-10-10",
+      "category": "Mental Health",
+      "views": 210
+  },
+  {
+      "id": 4,
+      "image": "https://i.ibb.co/cYjKLdG/08.jpg",
+      "title": "Nutrition 101: The Basics of a Balanced Diet",
+      "description": "Learn the fundamentals of a balanced diet, including essential nutrients and tips for healthy eating habits.",
+      "username": "Chef Mike",
+      "userImage": "https://i.ibb.co/mC9Dyyk/photo-2024-05-11-19-01-05-modified.png",
+      "date": "2024-10-05",
+      "category": "Nutrition",
+      "views": 140
+  },
+  {
+      "id": 5,
+      "image": "https://i.ibb.co/cYjKLdG/08.jpg",
+      "title": "Exercise and Its Benefits for Mental Health",
+      "description": "Explore the connection between physical activity and mental well-being, and how exercise can help alleviate stress and anxiety.",
+      "username": "Fit Coach Lisa",
+      "userImage": "https://i.ibb.co/mC9Dyyk/photo-2024-05-11-19-01-05-modified.png",
+      "date": "2024-09-30",
+      "category": "Fitness",
+      "views": 175
+  },
+  {
+      "id": 6,
+      "image": "https://i.ibb.co/cYjKLdG/08.jpg",
+      "title": "Managing Stress in a Fast-Paced World",
+      "description": "Learn effective strategies to manage stress and enhance your mental resilience in today's demanding environment.",
+      "username": "Dr. Emily Clark",
+      "userImage": "https://i.ibb.co/mC9Dyyk/photo-2024-05-11-19-01-05-modified.png",
+      "date": "2024-09-25",
+      "category": "Mental Health",
+      "views": 225
+  },
+  {
+      "id": 7,
+      "image": "https://i.ibb.co/cYjKLdG/08.jpg",
+      "title": "Healthy Eating on a Budget",
+      "description": "Discover tips and tricks for maintaining a nutritious diet without breaking the bank.",
+      "username": "Nutritionist Tom",
+      "userImage": "https://i.ibb.co/mC9Dyyk/photo-2024-05-11-19-01-05-modified.png",
+      "date": "2024-09-20",
+      "category": "Nutrition",
+      "views": 95
+  },
+  {
+      "id": 8,
+      "image": "https://i.ibb.co/cYjKLdG/08.jpg",
+      "title": "Understanding Diabetes: A Patient's Guide",
+      "description": "This guide provides essential information about diabetes management and living a healthy life with the condition.",
+      "username": "Dr. Lisa Grant",
+      "userImage": "https://i.ibb.co/mC9Dyyk/photo-2024-05-11-19-01-05-modified.png",
+      "date": "2024-09-15",
+      "category": "Health",
+      "views": 300
+  },
+  {
+      "id": 9,
+      "image": "https://i.ibb.co/cYjKLdG/08.jpg",
+      "title": "The Role of Sleep in Mental Health",
+      "description": "Explore how quality sleep impacts your mental health and tips for better sleep hygiene.",
+      "username": "Sleep Expert Mark",
+      "userImage": "https://i.ibb.co/mC9Dyyk/photo-2024-05-11-19-01-05-modified.png",
+      "date": "2024-09-10",
+      "category": "Mental Health",
+      "views": 400
+  },
+  {
+      "id": 10,
+      "image": "https://i.ibb.co/cYjKLdG/08.jpg",
+      "title": "Staying Active: The Benefits of Regular Exercise",
+      "description": "Understand the physical and mental health benefits of staying active and how to incorporate exercise into your routine.",
+      "username": "Fitness Guru Anna",
+      "userImage": "https://i.ibb.co/mC9Dyyk/photo-2024-05-11-19-01-05-modified.png",
+      "date": "2024-09-05",
+      "category": "Fitness",
+      "views": 230
+  }
+]

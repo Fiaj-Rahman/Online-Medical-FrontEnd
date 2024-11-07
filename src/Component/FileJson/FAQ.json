@@ -1,0 +1,108 @@
+[
+    {
+      "category": "General",
+      "question": "What services do you offer?",
+      "answer": "We offer consultations, lab tests, radiology services, diagnostic testing, and access to your medical reports. You can schedule consultations with doctors and review reports through our online portal."
+    },
+    {
+      "category": "General",
+      "question": "How can I book an appointment?",
+      "answer": "You can book an appointment online through our website. Simply choose your desired doctor, select an available time slot, and confirm your booking. You will receive an email confirmation."
+    },
+    {
+      "category": "General",
+      "question": "Can I cancel or reschedule my appointment?",
+      "answer": "Yes, you can cancel or reschedule your appointment up to 24 hours in advance through your dashboard. If you need assistance, please contact our support team."
+    },
+    {
+      "category": "General",
+      "question": "How can I verify if my insurance is accepted?",
+      "answer": "You can check the list of accepted insurance providers on our website or contact our customer support for confirmation."
+    },
+    {
+      "category": "General",
+      "question": "What payment methods do you accept?",
+      "answer": "We accept credit/debit cards, cash, and mobile payment methods such as Apple Pay and Google Pay. You can also pay online via the website after booking your appointment."
+    },
+    {
+      "category": "General",
+      "question": "Do you offer home service?",
+      "answer": "Yes, we offer home visits for certain tests and consultations. Please contact our support team to check if home services are available for your location."
+    },
+    {
+      "category": "General",
+      "question": "Can I access my medical reports online?",
+      "answer": "Yes, once your consultation or test results are available, you can access your medical reports securely through your account on our website."
+    },
+    {
+      "category": "General",
+      "question": "Can I communicate directly with my doctor?",
+      "answer": "Yes, after your appointment, you can send messages and discuss further questions with your doctor through the secure messaging platform in your account."
+    },
+    {
+      "category": "General",
+      "question": "How can I download my medical reports?",
+      "answer": "After logging into your account, go to the 'Reports' section. There you can download or view your reports in PDF format."
+    },
+    {
+      "category": "General",
+      "question": "Do you offer telemedicine (online consultations)?",
+      "answer": "Yes, we offer telemedicine services for remote consultations. You can schedule a video consultation with any of our doctors through the website."
+    },
+    {
+      "category": "General",
+      "question": "How do I know if my doctor has availability?",
+      "answer": "You can check a doctor's availability on their profile page while booking an appointment. Available time slots will be shown based on the doctor's schedule."
+    },
+    {
+      "category": "Appointments",
+      "question": "How can I book an appointment with a doctor?",
+      "answer": "To book an appointment, log into your account, select the doctor you want to consult, choose an available time slot, and complete the booking process. You will get a confirmation email."
+    },
+    {
+      "category": "Appointments",
+      "question": "Can I book an appointment for my family members?",
+      "answer": "Yes, you can book appointments for family members by selecting their details during the booking process."
+    },
+    {
+      "category": "Appointments",
+      "question": "Can I choose a specific doctor for my consultation?",
+      "answer": "Yes, when booking an appointment, you can choose a specific doctor from the list of available doctors."
+    },
+    {
+      "category": "Appointments",
+      "question": "How do I know if my appointment is confirmed?",
+      "answer": "Once your appointment is successfully booked, you will receive an email confirmation with the details of the appointment."
+    },
+    {
+      "category": "Insurance & Payments",
+      "question": "What types of insurance do you accept?",
+      "answer": "We accept most major insurance providers including ABC Health, XYZ Insurance, and others. Please check our website for a full list or contact our support team."
+    },
+    {
+      "category": "Insurance & Payments",
+      "question": "Can I pay online for my appointment?",
+      "answer": "Yes, we offer online payment options. You can pay directly through our website during the appointment booking process."
+    },
+    {
+      "category": "Insurance & Payments",
+      "question": "Is there a refund policy for appointments or services?",
+      "answer": "Refunds are provided under certain conditions, such as cancellation of services 24 hours in advance. Please refer to our Refund Policy for more details."
+    },
+    {
+      "category": "Doctor & Consultation",
+      "question": "How can I find the right doctor for my consultation?",
+      "answer": "You can browse through our list of doctors based on their specialty. Each doctor profile contains information about their qualifications, experience, and patient reviews."
+    },
+    {
+      "category": "Doctor & Consultation",
+      "question": "How do I communicate with my doctor after the consultation?",
+      "answer": "After the consultation, you can send secure messages to your doctor through the online portal if you have any follow-up questions."
+    },
+    {
+      "category": "Doctor & Consultation",
+      "question": "Do I need to bring any documents to my consultation?",
+      "answer": "It is advisable to bring any relevant medical documents such as previous test results, prescriptions, and health records to your consultation."
+    }
+  ]
+  
