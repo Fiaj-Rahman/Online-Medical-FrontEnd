@@ -1,0 +1,287 @@
+[
+    {
+      "id": 1,
+      "name": "Dr. John Doe",
+      "specialty": "Cardiologist",
+      "location": "New York, NY",
+      "contact": {
+        "phone": "+1 123-456-7890",
+        "email": "johndoe@example.com"
+      },
+      "availability": {
+        "days": ["Monday", "Wednesday", "Friday"],
+        "hours": "9:00 AM - 5:00 PM"
+      },
+      "price": "1800",
+      "image": "./doctor1.jpg",
+      "category": "Cardiology",
+      "rating": 4.5,
+      "reviews": 120
+    },
+    {
+      "id": 2,
+      "name": "Dr. Sarah Smith",
+      "specialty": "Dermatologist",
+      "location": "Los Angeles, CA",
+      "contact": {
+        "phone": "+1 987-654-3210",
+        "email": "sarahsmith@example.com"
+      },
+      "availability": {
+        "days": ["Tuesday", "Thursday"],
+        "hours": "10:00 AM - 4:00 PM"
+      },
+      "price": "1500",
+      "image": "./doctor1.jpg",
+      "category": "Dermatology",
+      "rating": 4.7,
+      "reviews": 98
+    },
+    {
+      "id": 3,
+      "name": "Dr. Michael Brown",
+      "specialty": "Pediatrician",
+      "location": "Chicago, IL",
+      "contact": {
+        "phone": "+1 555-123-4567",
+        "email": "michaelbrown@example.com"
+      },
+      "availability": {
+        "days": ["Monday", "Wednesday", "Friday"],
+        "hours": "8:00 AM - 2:00 PM"
+      },
+      "price": "1200",
+      "image": "./doctor1.jpg",
+      "category": "Pediatrics",
+      "rating": 4.2,
+      "reviews": 85
+    },
+    {
+      "id": 4,
+      "name": "Dr. Emily Davis",
+      "specialty": "Orthopedic Surgeon",
+      "location": "San Francisco, CA",
+      "contact": {
+        "phone": "+1 333-456-7890",
+        "email": "emilydavis@example.com"
+      },
+      "availability": {
+        "days": ["Tuesday", "Thursday"],
+        "hours": "9:00 AM - 5:00 PM"
+      },
+      "price": "2000",
+      "image": "./doctor1.jpg",
+      "category": "Orthopedics",
+      "rating": 4.8,
+      "reviews": 150
+    },
+    {
+      "id": 5,
+      "name": "Dr. Robert Johnson",
+      "specialty": "Dentist",
+      "location": "Houston, TX",
+      "contact": {
+        "phone": "+1 444-789-0123",
+        "email": "robertjohnson@example.com"
+      },
+      "availability": {
+        "days": ["Monday", "Thursday"],
+        "hours": "8:00 AM - 3:00 PM"
+      },
+      "price": "1000",
+      "image": "./doctor1.jpg",
+      "category": "Dentistry",
+      "rating": 4.3,
+      "reviews": 65
+    },
+    {
+      "id": 6,
+      "name": "Dr. Linda Martinez",
+      "specialty": "Ophthalmologist",
+      "location": "Miami, FL",
+      "contact": {
+        "phone": "+1 555-234-5678",
+        "email": "lindamartinez@example.com"
+      },
+      "availability": {
+        "days": ["Wednesday", "Friday"],
+        "hours": "9:00 AM - 6:00 PM"
+      },
+      "price": "1350",
+      "image": "./doctor1.jpg",
+      "category": "Ophthalmology",
+      "rating": 4.6,
+      "reviews": 110
+    },
+    {
+      "id": 7,
+      "name": "Dr. William Wilson",
+      "specialty": "Neurologist",
+      "location": "Seattle, WA",
+      "contact": {
+        "phone": "+1 222-345-6789",
+        "email": "williamwilson@example.com"
+      },
+      "availability": {
+        "days": ["Monday", "Thursday"],
+        "hours": "10:00 AM - 4:00 PM"
+      },
+      "price": "1600",
+      "image": "./doctor1.jpg",
+      "category": "Neurology",
+      "rating": 4.4,
+      "reviews": 130
+    },
+    {
+      "id": 8,
+      "name": "Dr. Patricia Moore",
+      "specialty": "Psychiatrist",
+      "location": "Boston, MA",
+      "contact": {
+        "phone": "+1 111-678-9012",
+        "email": "patriciamoore@example.com"
+      },
+      "availability": {
+        "days": ["Tuesday", "Friday"],
+        "hours": "9:00 AM - 5:00 PM"
+      },
+      "price": "1300",
+      "image": "./doctor1.jpg",
+      "category": "Psychiatry",
+      "rating": 4.3,
+      "reviews": 105
+    },
+    {
+      "id": 9,
+      "name": "Dr. James Taylor",
+      "specialty": "General Practitioner",
+      "location": "Dallas, TX",
+      "contact": {
+        "phone": "+1 666-234-8901",
+        "email": "jamestaylor@example.com"
+      },
+      "availability": {
+        "days": ["Monday", "Wednesday", "Friday"],
+        "hours": "9:00 AM - 12:00 PM"
+      },
+      "price": "950",
+      "image": "./doctor1.jpg",
+      "category": "General Medicine",
+      "rating": 4.1,
+      "reviews": 75
+    },
+    {
+      "id": 10,
+      "name": "Dr. Olivia Harris",
+      "specialty": "Gynecologist",
+      "location": "Phoenix, AZ",
+      "contact": {
+        "phone": "+1 777-567-8901",
+        "email": "oliviaharris@example.com"
+      },
+      "availability": {
+        "days": ["Tuesday", "Thursday"],
+        "hours": "8:00 AM - 3:00 PM"
+      },
+      "price": "1900",
+      "image": "./doctor1.jpg",
+      "category": "Gynecology",
+      "rating": 3.6,
+      "reviews": 95
+    },
+    {
+      "id": 11,
+      "name": "Dr. Daniel Clark",
+      "specialty": "Endocrinologist",
+      "location": "Denver, CO",
+      "contact": {
+        "phone": "+1 888-345-6789",
+        "email": "danielclark@example.com"
+      },
+      "availability": {
+        "days": ["Wednesday", "Friday"],
+        "hours": "9:00 AM - 4:00 PM"
+      },
+      "price": "1750",
+      "image": "./doctor1.jpg",
+      "category": "Endocrinology",
+      "rating": 4.2,
+      "reviews": 80
+    },
+    {
+      "id": 12,
+      "name": "Dr. Nancy Lewis",
+      "specialty": "Hematologist",
+      "location": "Atlanta, GA",
+      "contact": {
+        "phone": "+1 999-678-9012",
+        "email": "nancylewis@example.com"
+      },
+      "availability": {
+        "days": ["Monday", "Thursday"],
+        "hours": "10:00 AM - 2:00 PM"
+      },
+      "price": "1450",
+      "image": "./doctor1.jpg",
+      "category": "Hematology",
+      "rating": 4.3,
+      "reviews": 60
+    },
+    {
+      "id": 13,
+      "name": "Dr. George King",
+      "specialty": "Gastroenterologist",
+      "location": "Chicago, IL",
+      "contact": {
+        "phone": "+1 444-567-8901",
+        "email": "georgeking@example.com"
+      },
+      "availability": {
+        "days": ["Monday", "Tuesday"],
+        "hours": "9:00 AM - 5:00 PM"
+      },
+      "price": "1700",
+      "image": "./doctor1.jpg",
+      "category": "Gastroenterology",
+      "rating": 4.7,
+      "reviews": 120
+    },
+    {
+      "id": 14,
+      "name": "Dr. Emily Adams",
+      "specialty": "Rheumatologist",
+      "location": "Dallas, TX",
+      "contact": {
+        "phone": "+1 555-890-1234",
+        "email": "emilyadams@example.com"
+      },
+      "availability": {
+        "days": ["Wednesday", "Friday"],
+        "hours": "8:00 AM - 4:00 PM"
+      },
+      "price": "1600",
+      "image": "./doctor1.jpg",
+      "category": "Rheumatology",
+      "rating": 4.5,
+      "reviews": 90
+    },
+    {
+      "id": 15,
+      "name": "Dr. William Anderson",
+      "specialty": "Urologist",
+      "location": "Los Angeles, CA",
+      "contact": {
+        "phone": "+1 333-789-0123",
+        "email": "williamanderson@example.com"
+      },
+      "availability": {
+        "days": ["Monday", "Thursday"],
+        "hours": "10:00 AM - 6:00 PM"
+      },
+      "price": "1800",
+      "image": "./doctor1.jpg",
+      "category": "Urology",
+      "rating": 4.6,
+      "reviews": 130
+    }
+]

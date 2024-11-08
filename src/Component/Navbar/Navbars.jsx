@@ -84,7 +84,7 @@ function ProfileMenu() {
 const navListItems = [
     { label: "Blog", icon: CubeTransparentIcon, link: "/blog" }, // Blog route
     { label: "Contact Us", icon: UserCircleIcon, link: "/contact" }, // Contact Us route
-    { label: "Find a Doctor", icon: CodeBracketSquareIcon, link: "/doctors" }, // Find a Doctor route
+    { label: "Find a Doctor", icon: CodeBracketSquareIcon, link: "/Find_a_Doctor" }, // Find a Doctor route
     { label: "Become a Doctor", icon: CodeBracketSquareIcon, link: "/become-doctor" }, // Become a Doctor route
     // Add more routes here if needed
 ];
