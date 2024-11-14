@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Parallax } from 'react-parallax';
 import doctorData from './../../../Component/FileJson/Doctor.json';
 import { FaSearch, FaStar } from 'react-icons/fa';
+import { useNavigate, useParams } from "react-router-dom";
 
 const FindDoctorBanner = () => {
     const [doctors, setDoctors] = useState([]);
@@ -15,7 +16,12 @@ const FindDoctorBanner = () => {
     const [doctorsPerPage] = useState(6);
     const [sortByRating, setSortByRating] = useState(false);
     const [ratingFilter, setRatingFilter] = useState("All");
+    const { doctorId } = useParams();  // Fetch the doctorId from the URL params
+    const navigate = useNavigate();
 
+    const handleDetailsClick = (id) => {
+        navigate(`/doctor-details/${id}`);
+    };
     useEffect(() => {
         setDoctors(doctorData);
         setFilteredDoctors(doctorData);
@@ -227,6 +233,7 @@ const FindDoctorBanner = () => {
                                     <p className="text-sm sm:text-md text-gray-500 mb-3">{doctor.experience} years of experience</p>
                                     <p className="text-lg sm:text-xl font-semibold">{doctor.price} BDT</p>
                                     <button
+                                        onClick={() => handleDetailsClick(doctor.id)}
                                         className="px-6 w-full mt-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 ease-in-out transform hover:scale-105"
                                     >
                                         Details
@@ -235,21 +242,21 @@ const FindDoctorBanner = () => {
                             </div>
                         )) : (
                             <div className="flex justify-center w-full h-screen items-center text-center m-auto">
-            <div className="max-w-md w-full bg-white shadow-lg rounded-lg overflow-hidden">
-              <div className="relative">
-                <iframe
-                  src="https://lottie.host/embed/4ee38469-2579-4d50-85b6-64d504e32831/uBSFYrb58r.json"
-                  frameBorder="0"
-                  className="w-full h-72 sm:h-96 rounded-lg"
-                  title="Animation"
-                ></iframe>
-                <div className="absolute inset-0 bg-black bg-opacity-25 rounded-lg"></div>
-              </div>
-              <div className="p-4">
-                <p className="text-center text-lg sm:text-xl text-gray-600">No doctors found based on the filters.</p>
-              </div>
-            </div>
-          </div>
+                                <div className="max-w-md w-full bg-white shadow-lg rounded-lg overflow-hidden">
+                                    <div className="relative">
+                                        <iframe
+                                            src="https://lottie.host/embed/4ee38469-2579-4d50-85b6-64d504e32831/uBSFYrb58r.json"
+                                            frameBorder="0"
+                                            className="w-full h-72 sm:h-96 rounded-lg"
+                                            title="Animation"
+                                        ></iframe>
+                                        <div className="absolute inset-0 bg-black bg-opacity-25 rounded-lg"></div>
+                                    </div>
+                                    <div className="p-4">
+                                        <p className="text-center text-lg sm:text-xl text-gray-600">No doctors found based on the filters.</p>
+                                    </div>
+                                </div>
+                            </div>
 
                         )}
                     </div>

@@ -7,6 +7,10 @@ import BlogPage from "../../Pages/Blog/BlogPage/BlogPage";
 import FindDoctorPage from "../../Pages/FindDoctor/FindDoctorPage/FindDoctorPage";
 import Contact from "../../Pages/Contact/Contact";
 import BecomeDoctorPage from "../../Pages/BecomeDoctor/BecomeDoctorPage/BecomeDoctorPage";
+import UserLayOut from "../../UserDashboard/UserLayOut/UserLayOut";
+import UserStatistic from "../../UserDashboard/UserDashboardComponent/UserStatistic/UserStatistic";
+import UserProfile from "../../UserDashboard/UserDashboardComponent/UserProfile/UserProfile";
+import DoctorDetailsPage from "../../Pages/FindDoctor/FindDoctorComponent/DoctorDetails";
 
 export const router = createBrowserRouter([
     {
@@ -27,6 +31,10 @@ export const router = createBrowserRouter([
                 element: <FindDoctorPage></FindDoctorPage>
             },
             {
+                path: "/doctor-details/:id",  // Dynamic route for doctor details
+                element: <DoctorDetailsPage></DoctorDetailsPage>
+            },
+            {
                 path:"/contact",
                 element:<Contact></Contact>
             },
@@ -36,5 +44,24 @@ export const router = createBrowserRouter([
             }
         ]
 
+    },
+
+
+
+    // user dashboard 
+    {
+        path:'/dashboard',
+        element:<UserLayOut></UserLayOut>,
+        errorElement:<ErrorPage></ErrorPage>,
+        children:[
+            {
+                path: "statistic",
+                element: <UserStatistic></UserStatistic>
+            },
+            {
+                path:"profile",
+                element:<UserProfile></UserProfile>
+            }
+        ]
     }
 ])

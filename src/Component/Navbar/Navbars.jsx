@@ -26,9 +26,9 @@ import {
 
 // Profile menu component with appropriate icons for actions
 const profileMenuItems = [
-    { label: "My Profile", icon: UserCircleIcon, link: "/profile" },
-    { label: "Edit Profile", icon: Cog6ToothIcon, link: "/edit-profile" },
-    { label: "Inbox", icon: InboxArrowDownIcon, link: "/inbox" },
+    
+    { label: "Dashboard", icon: Cog6ToothIcon, link: "/dashboard/statistic" },
+    { label: "Notification", icon: InboxArrowDownIcon, link: "/inbox" },
     { label: "Help", icon: LifebuoyIcon, link: "/help" },
     { label: "Sign Out", icon: PowerIcon, link: "/sign-out" },
 ];
@@ -85,7 +85,7 @@ const navListItems = [
     { label: "Blog", icon: CubeTransparentIcon, link: "/blog" }, // Blog route
     { label: "Contact Us", icon: UserCircleIcon, link: "/contact" }, // Contact Us route
     { label: "Find a Doctor", icon: CodeBracketSquareIcon, link: "/Find_a_Doctor" }, // Find a Doctor route
-    { label: "Become a Doctor", icon: CodeBracketSquareIcon, link: "/become-doctor" }, // Become a Doctor route
+    { label: "Become an Doctor", icon: CodeBracketSquareIcon, link: "/become-doctor" }, // Become a Doctor route
     // Add more routes here if needed
 ];
 

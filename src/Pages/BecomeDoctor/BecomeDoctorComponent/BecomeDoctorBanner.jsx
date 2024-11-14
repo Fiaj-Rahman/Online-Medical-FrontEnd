@@ -19,7 +19,7 @@ const BecomeDoctorBanner = () => {
                 Join the rapidly growing field of telemedicine and make a difference in healthcare from anywhere.
               </p>
               <button className="px-6 py-3 bg-blue-600 text-white font-semibold text-lg md:text-xl rounded-md hover:bg-blue-700 transition duration-300">
-                Start Your Journey
+                <a href="#personalInformation">Start Your Journey</a>
               </button>
             </div>
           </div>
