@@ -138,7 +138,7 @@ const Navbars = () => {
                     <Bars2Icon className="h-6 w-6" />
                 </IconButton>
                 <Button size="sm" variant="outlined" className="border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white transition duration-200 ">
-                    Log In
+                    <Link to={'/login'}>Log In</Link>
                 </Button>
                 <ProfileMenu />
             </div>

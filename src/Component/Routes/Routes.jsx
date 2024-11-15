@@ -11,6 +11,8 @@ import UserLayOut from "../../UserDashboard/UserLayOut/UserLayOut";
 import UserStatistic from "../../UserDashboard/UserDashboardComponent/UserStatistic/UserStatistic";
 import UserProfile from "../../UserDashboard/UserDashboardComponent/UserProfile/UserProfile";
 import DoctorDetailsPage from "../../Pages/FindDoctor/FindDoctorComponent/DoctorDetails";
+import Login from "../Authentication/Login/Login";
+import SignUp from "../Authentication/SignUp/SignUp";
 
 export const router = createBrowserRouter([
     {
@@ -41,6 +43,14 @@ export const router = createBrowserRouter([
             {
                 path:"/become-doctor",
                 element:<BecomeDoctorPage></BecomeDoctorPage>
+            },
+            {
+                path: "/login",
+                element:<Login></Login>
+            },
+            {
+                path:"/signUp",
+                element:<SignUp></SignUp>
             }
         ]
 

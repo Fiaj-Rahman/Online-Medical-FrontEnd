@@ -124,8 +124,9 @@ const DoctorDetailsPage = () => {
             <div className="bg-white shadow-lg rounded-lg overflow-hidden grid grid-cols-1 md:grid-cols-2 gap-6 p-6 md:p-10">
                 {/* Doctor Image */}
                 <div className="flex justify-center mb-4 md:mb-0">
+                    {/* Fixing image rendering issue */}
                     <img 
-                        src={doctor.image} 
+                        src={doctor.image} // Reference image in public/images
                         alt={doctor.name} 
                         className="w-72 h-72 object-cover rounded-xl shadow-lg border-4 border-indigo-200"
                     />
