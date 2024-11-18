@@ -56,7 +56,7 @@ const Banner = () => {
               Receive personalized treatment plans from top specialists, focused on your health needs.
             </p>
             <div className="mt-4 flex space-x-4">
-              <a data-aos="fade-up" data-aos-delay="600" href="/find-doctor" className="bg-blue-600 text-white py-2 px-6 rounded-full shadow hover:bg-blue-700 transition">Find Doctor</a>
+              <a data-aos="fade-up" data-aos-delay="600" href="/Find_a_Doctor" className="bg-blue-600 text-white py-2 px-6 rounded-full shadow hover:bg-blue-700 transition">Find Doctor</a>
               <a data-aos="fade-up" data-aos-delay="800" href="/appointment" className="bg-green-600 text-white py-2 px-6 rounded-full shadow hover:bg-green-700 transition">Appointment</a>
             </div>
           </div>
@@ -70,7 +70,7 @@ const Banner = () => {
               From routine check-ups to specialized consultations, our team is dedicated to your well-being.
             </p>
             <div className="mt-4 flex space-x-4">
-              <a data-aos="fade-up" data-aos-delay="600" href="/find-doctor" className="bg-blue-600 text-white py-2 px-6 rounded-full shadow hover:bg-blue-700 transition">Find Doctor</a>
+              <a data-aos="fade-up" data-aos-delay="600" href="/Find_a_Doctor" className="bg-blue-600 text-white py-2 px-6 rounded-full shadow hover:bg-blue-700 transition">Find Doctor</a>
               <a data-aos="fade-up" data-aos-delay="800" href="/appointment" className="bg-green-600 text-white py-2 px-6 rounded-full shadow hover:bg-green-700 transition">Appointment</a>
             </div>
           </div>
@@ -84,7 +84,7 @@ const Banner = () => {
               Our emergency care team is available 24/7, ensuring timely help whenever you need it.
             </p>
             <div className="mt-4 flex space-x-4">
-              <a data-aos="fade-up" data-aos-delay="600" href="/find-doctor" className="bg-blue-600 text-white py-2 px-6 rounded-full shadow hover:bg-blue-700 transition">Find Doctor</a>
+              <a data-aos="fade-up" data-aos-delay="600" href="/Find_a_Doctor" className="bg-blue-600 text-white py-2 px-6 rounded-full shadow hover:bg-blue-700 transition">Find Doctor</a>
               <a data-aos="fade-up" data-aos-delay="800" href="/appointment" className="bg-green-600 text-white py-2 px-6 rounded-full shadow hover:bg-green-700 transition">Appointment</a>
             </div>
           </div>

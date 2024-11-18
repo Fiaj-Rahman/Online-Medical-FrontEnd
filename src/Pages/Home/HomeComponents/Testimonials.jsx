@@ -11,7 +11,7 @@ const Testimonials = () => {
 
     useEffect(() => {
         setTestimonials(testimonialsData);
-        console.log('Testimonials loaded:', testimonialsData); // Debugging
+        // console.log('Testimonials loaded:', testimonialsData); // Debugging
     }, []);
 
     return (

@@ -1,117 +1,151 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../AuthProvider/AuthProvider";
+import { toast } from "react-toastify"; // Assuming you're using react-toastify for error messages
 
 const SignUp = () => {
-  const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    image: null,
-    nationality: '',
-    phoneNumber: '',
-    password: '',
-    confirmPassword: '',
-  });
-  const [errors, setErrors] = useState({});
-  const [imagePreview, setImagePreview] = useState(null);
+  const { signUpUser, setUser } = useContext(AuthContext);
+  const navigate = useNavigate(); // For redirect after successful signup
 
-  // Basic form validation
-  const validateForm = () => {
+  const [errors, setErrors] = useState({
+    fullName: "",
+    email: "",
+    phoneNumber: "",
+    nationality: "",
+    image: "",
+    password: "",
+    confirmPassword: "",
+    general: "",  // General error for form-wide issues
+  });
+  const [imagePreview, setImagePreview] = useState(null);
+  const [loading, setLoading] = useState(false); // Loading state for the form submission
+
+  // Basic form validation function
+  const validateForm = (formData) => {
     const newErrors = {};
 
     // Email validation
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     if (!formData.email) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
     } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+      newErrors.email = "Please enter a valid email address";
     }
 
-    // Phone number validation (simple check for numeric input)
-    const phoneRegex = /^[0-9]{10}$/;
+    // Phone number validation (allowing both 10 or 11 digits)
+    const phoneRegex = /^[0-9]{10,11}$/;
     if (!formData.phoneNumber) {
-      newErrors.phoneNumber = 'Phone Number is required';
+      newErrors.phoneNumber = "Phone Number is required";
     } else if (!phoneRegex.test(formData.phoneNumber)) {
-      newErrors.phoneNumber = 'Please enter a valid 10-digit phone number';
+      newErrors.phoneNumber = "Please enter a valid phone number (10 or 11 digits)";
     }
 
     // Password validation
-    if (!formData.password) newErrors.password = 'Password is required';
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+={}\[\]|;:'",.<>?/~`]).{6,}$/;
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    } else if (!passwordRegex.test(formData.password)) {
+      newErrors.password = "Password must be at least 6 characters long, include at least one letter, one number, and one special character";
     }
 
-    if (!formData.fullName) newErrors.fullName = 'Full Name is required';
-    if (!formData.image) newErrors.image = 'Profile Image is required';
-    if (!formData.nationality) newErrors.nationality = 'Nationality is required';
+    // Confirm Password validation
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    // Check for other fields
+    if (!formData.fullName) newErrors.fullName = "Full Name is required";
+    if (!formData.nationality) newErrors.nationality = "Nationality is required";
+
+    // Image validation
+    if (!formData.image) {
+      newErrors.image = "Profile image is required";
+    } else if (formData.image && !formData.image.type.startsWith("image/")) {
+      newErrors.image = "File must be an image";
+    }
 
     return newErrors;
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    const newErrors = validateForm();
-    setErrors(newErrors);
 
-    // Only submit if there are no errors
-    if (Object.keys(newErrors).length === 0) {
-      console.log('Form Data:', formData);
-      
-      // Reset form after successful submission
-      setFormData({
-        fullName: '',
-        email: '',
-        image: null,
-        nationality: '',
-        phoneNumber: '',
-        password: '',
-        confirmPassword: '',
-      });
-      setImagePreview(null);
-      setErrors({});
+    // Manually extract form values from e.target
+    const fullName = e.target.fullName.value;
+    const email = e.target.email.value;
+    const phoneNumber = e.target.phoneNumber.value;
+    const nationality = e.target.nationality.value;
+    const image = e.target.image.files[0];  // For file input, use `files[0]`
+    const password = e.target.password.value;
+    const confirmPassword = e.target.confirmPassword.value;
+
+    const formData = {
+      fullName,
+      email,
+      phoneNumber,
+      nationality,
+      image,
+      password,
+      confirmPassword,
+    };
+
+    // Validate form before submission
+    const validationErrors = validateForm(formData);
+    setErrors(validationErrors);
+
+    // If there are no errors, proceed with signup
+    if (Object.keys(validationErrors).length === 0) {
+      try {
+        setLoading(true);  // Start loading state
+        setErrors({ ...errors, general: "" }); // Reset general errors before submission
+
+        // Await the signUpUser function and get the result
+        const result = await signUpUser(email, password);
+
+        // Once signUp is successful, set the user context
+        setUser(result.user);  // Assuming result contains the user object
+
+        setLoading(false);  // Stop loading state
+        toast.success("Signup successful!");  // Show success message
+        navigate("/");  // Redirect to homepage/dashboard (or any other page)
+
+        // Reset form after successful signup
+        e.target.reset();
+        setImagePreview(null);  // Clear image preview
+      } catch (error) {
+        setLoading(false);  // Stop loading state
+        setErrors({ ...errors, general: error.message });  // Set general error message if any
+        toast.error(error.message);  // Show error message in toast
+      }
     }
   };
 
-  // Handle input change
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  // Handle image file change
+  // Handle file input for image preview
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setFormData({
-        ...formData,
-        image: file,
-      });
-      setImagePreview(URL.createObjectURL(file)); // Preview the image
+      if (file.size > 2 * 1024 * 1024) { // Limit to 2MB
+        setErrors({ ...errors, image: "File size exceeds 2MB" });
+      } else if (!file.type.startsWith("image/")) { // Check if it's an image file
+        setErrors({ ...errors, image: "Only image files are allowed" });
+      } else {
+        setErrors({ ...errors, image: "" });  // Clear error if valid image
+        setImagePreview(URL.createObjectURL(file));
+      }
     }
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-700 via-indigo-800 to-purple-900">
-      <div className="w-full max-w-md p-8 my-10 rounded-lg shadow-lg bg-gray-100 text-gray-800 ">
-
-        {/* Form Header */}
+      <div className="w-full max-w-md p-8 my-10 rounded-lg shadow-lg bg-gray-100 text-gray-800">
         <h2 className="mb-4 text-3xl font-semibold text-center text-gray-800">Create Your Account</h2>
 
-        {/* Social Media Login */}
-        <div className="my-6 space-y-4">
-          <button className="flex items-center justify-center w-full p-4 space-x-4 border rounded-md focus:ring-2 focus:ring-offset-1 border-gray-700 focus:ring-violet-400 hover:bg-violet-500 transition">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="w-5 h-5 fill-current">
-              <path d="M16.318 13.714v5.484h9.078c-0.37 2.354-2.745 6.901-9.078 6.901-5.458 0-9.917-4.521-9.917-10.099s4.458-10.099 9.917-10.099c3.109 0 5.193 1.318 6.38 2.464l4.339-4.182c-2.786-2.599-6.396-4.182-10.719-4.182-8.844 0-16 7.151-16 16s7.156 16 16 16c9.234 0 15.365-6.49 15.365-15.635 0-1.052-0.115-1.854-0.255-2.651z"></path>
-            </svg>
-            <p>Login with Google</p>
-          </button>
-        </div>
+        {/* Display General Error */}
+        {errors.general && (
+          <div className="mb-4 text-red-400 text-center">{errors.general}</div>
+        )}
 
-        {/* Form Fields */}
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Full Name */}
           <div className="space-y-2">
@@ -120,10 +154,8 @@ const SignUp = () => {
               type="text"
               id="fullName"
               name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
               placeholder="John Doe"
-              className={`w-full px-4 py-2 border rounded-md ${errors.fullName ? 'border-red-400' : 'border-gray-700'} bg-gray-100 text-gray-800 focus:border-violet-400 focus:outline-none`}
+              className={`w-full px-4 py-2 border rounded-md ${errors.fullName ? "border-red-400" : "border-gray-700"} bg-gray-100 text-gray-800 focus:border-violet-400 focus:outline-none`}
             />
             {errors.fullName && <span className="text-xs text-red-400">{errors.fullName}</span>}
           </div>
@@ -135,10 +167,8 @@ const SignUp = () => {
               type="email"
               id="email"
               name="email"
-              value={formData.email}
-              onChange={handleChange}
               placeholder="leroy@jenkins.com"
-              className={`w-full px-4 py-2 border rounded-md ${errors.email ? 'border-red-400' : 'border-gray-700'} bg-gray-100 text-gray-800 focus:border-violet-400 focus:outline-none`}
+              className={`w-full px-4 py-2 border rounded-md ${errors.email ? "border-red-400" : "border-gray-700"} bg-gray-100 text-gray-800 focus:border-violet-400 focus:outline-none`}
             />
             {errors.email && <span className="text-xs text-red-400">{errors.email}</span>}
           </div>
@@ -150,10 +180,8 @@ const SignUp = () => {
               type="text"
               id="phoneNumber"
               name="phoneNumber"
-              value={formData.phoneNumber}
-              onChange={handleChange}
               placeholder="Your phone number"
-              className={`w-full px-4 py-2 border rounded-md ${errors.phoneNumber ? 'border-red-400' : 'border-gray-700'} bg-gray-100 text-gray-800 focus:border-violet-400 focus:outline-none`}
+              className={`w-full px-4 py-2 border rounded-md ${errors.phoneNumber ? "border-red-400" : "border-gray-700"} bg-gray-100 text-gray-800 focus:border-violet-400 focus:outline-none`}
             />
             {errors.phoneNumber && <span className="text-xs text-red-400">{errors.phoneNumber}</span>}
           </div>
@@ -165,10 +193,8 @@ const SignUp = () => {
               type="text"
               id="nationality"
               name="nationality"
-              value={formData.nationality}
-              onChange={handleChange}
               placeholder="Your nationality"
-              className={`w-full px-4 py-2 border rounded-md ${errors.nationality ? 'border-red-400' : 'border-gray-700'} bg-gray-100 text-gray-800 focus:border-violet-400 focus:outline-none`}
+              className={`w-full px-4 py-2 border rounded-md ${errors.nationality ? "border-red-400" : "border-gray-700"} bg-gray-100 text-gray-800 focus:border-violet-400 focus:outline-none`}
             />
             {errors.nationality && <span className="text-xs text-red-400">{errors.nationality}</span>}
           </div>
@@ -182,7 +208,7 @@ const SignUp = () => {
               name="image"
               accept="image/*"
               onChange={handleImageChange}
-              className={`w-full px-4 py-2 border rounded-md ${errors.image ? 'border-red-400' : 'border-gray-700'} bg-gray-100 text-gray-800 focus:border-violet-400 focus:outline-none`}
+              className={`w-full px-4 py-2 border rounded-md ${errors.image ? "border-red-400" : "border-gray-700"} bg-gray-100 text-gray-800 focus:border-violet-400 focus:outline-none`}
             />
             {errors.image && <span className="text-xs text-red-400">{errors.image}</span>}
             {imagePreview && (
@@ -199,10 +225,8 @@ const SignUp = () => {
               type="password"
               id="password"
               name="password"
-              value={formData.password}
-              onChange={handleChange}
               placeholder="********"
-              className={`w-full px-4 py-2 border rounded-md ${errors.password ? 'border-red-400' : 'border-gray-700'} bg-gray-100 text-gray-800 focus:border-violet-400 focus:outline-none`}
+              className={`w-full px-4 py-2 border rounded-md ${errors.password ? "border-red-400" : "border-gray-700"} bg-gray-100 text-gray-800 focus:border-violet-400 focus:outline-none`}
             />
             {errors.password && <span className="text-xs text-red-400">{errors.password}</span>}
           </div>
@@ -214,21 +238,24 @@ const SignUp = () => {
               type="password"
               id="confirmPassword"
               name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
               placeholder="********"
-              className={`w-full px-4 py-2 border rounded-md ${errors.confirmPassword ? 'border-red-400' : 'border-gray-700'} bg-gray-100 text-gray-800 focus:border-violet-400 focus:outline-none`}
+              className={`w-full px-4 py-2 border rounded-md ${errors.confirmPassword ? "border-red-400" : "border-gray-700"} bg-gray-100 text-gray-800 focus:border-violet-400 focus:outline-none`}
             />
             {errors.confirmPassword && <span className="text-xs text-red-400">{errors.confirmPassword}</span>}
           </div>
 
           {/* Submit Button */}
-          <button type="submit" className="w-full px-8 py-3 font-semibold rounded-md bg-blue-900 text-gray-100 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-violet-400">
-            Sign Up
+          <button
+            type="submit"
+            className="w-full px-8 py-3 font-semibold rounded-md bg-blue-900 text-gray-100 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-violet-400"
+            disabled={loading}
+          >
+            {loading ? "Signing up..." : "Sign Up"}
           </button>
 
-          <p className="text-xs text-center sm:px-6 text-gray-400"> If you have an account,
-            <Link className="underline text-indigo-600" to={'/login'}>Log in</Link>
+          {/* Login Link */}
+          <p className="text-xs text-center sm:px-6 text-gray-400">
+            If you have an account, <Link className="underline text-indigo-600" to="/login">Log in</Link>
           </p>
         </form>
       </div>

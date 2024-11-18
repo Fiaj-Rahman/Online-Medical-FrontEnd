@@ -13,6 +13,8 @@ import UserProfile from "../../UserDashboard/UserDashboardComponent/UserProfile/
 import DoctorDetailsPage from "../../Pages/FindDoctor/FindDoctorComponent/DoctorDetails";
 import Login from "../Authentication/Login/Login";
 import SignUp from "../Authentication/SignUp/SignUp";
+import PrivateRoute from "./../Authentication/PrivateRoute/PrivateRoute"
+
 
 export const router = createBrowserRouter([
     {
@@ -38,7 +40,7 @@ export const router = createBrowserRouter([
             },
             {
                 path:"/contact",
-                element:<Contact></Contact>
+                element:<PrivateRoute><Contact></Contact></PrivateRoute>
             },
             {
                 path:"/become-doctor",
