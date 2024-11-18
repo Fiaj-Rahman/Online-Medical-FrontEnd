@@ -1,6 +1,15 @@
 import React, { createContext, useState, useEffect } from "react";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut, sendPasswordResetEmail  } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+  sendPasswordResetEmail,
+  sendEmailVerification,
+} from "firebase/auth";
 import { auth } from "../Firebase/firebase.confiq"; // Ensure path is correct
+import { useNavigate } from "react-router-dom";
 
 // Create Context for authentication
 export const AuthContext = createContext(null);
@@ -29,11 +38,20 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null); // New state to handle errors
   const googleProvider = new GoogleAuthProvider();
+  // const navigate = useNavigate(); // Used for navigation after signup
 
   // Sign Up User function
   const signUpUser = async (email, password) => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+      await sendEmailVerification(auth.currentUser); // Send verification email
+      await signOut(auth); // Sign out the user to encourage email verification
+
+      alert('Please verify your email by checking the inbox for a verification link.');
+
+      // Navigate to login page after successful signup
+      // navigate('/login');
+
       setError(null); // Clear error on successful signup
     } catch (error) {
       setError(translateError(error.code)); // Set error message if signup fails
@@ -43,7 +61,18 @@ const AuthProvider = ({ children }) => {
   // Login User function
   const loginUser = async (email, password) => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      if (user.emailVerified) {
+        alert('Your email is verified.');
+      } else {
+        alert('Please verify your email. Check your inbox.');
+        await signOut(auth);
+        await sendEmailVerification(auth.currentUser);
+        
+      }
+
       setError(null); // Clear error on successful login
     } catch (error) {
       setError(translateError(error.code)); // Set error message if login fails
@@ -80,10 +109,6 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-
-
-
-
   // Use Firebase's onAuthStateChanged to monitor the user's login state
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -103,7 +128,6 @@ const AuthProvider = ({ children }) => {
     logOut,
     error, // Share the error state with children components
     resetPass,
-    
   };
 
   return (
