@@ -19,18 +19,45 @@ import {
     PowerIcon,
 } from "@heroicons/react/24/solid";
 import { AuthContext } from "../Authentication/AuthProvider/AuthProvider";
+import axios from "axios";
+import { FaBloggerB,FaUserDoctor,FaUsersLine  } from "react-icons/fa6";
+import { IoCall } from "react-icons/io5";
+import { MdDashboardCustomize } from "react-icons/md";
+import { IoMdNotifications } from "react-icons/io";
+
+
 
 // Profile menu component with appropriate icons for actions
 const profileMenuItems = [
-    { label: "Dashboard", icon: ChevronDownIcon, link: "/dashboard/statistic" },
-    { label: "Notification", icon: ChevronDownIcon, link: "/inbox" },
-    { label: "Help", icon: ChevronDownIcon, link: "/help" },
+    { label: "Dashboard", icon: MdDashboardCustomize, link: "/dashboard/statistic" },
+    { label: "Notification", icon: IoMdNotifications, link: "/inbox" },
     { label: "Sign Out", icon: PowerIcon, action: "signout" }, // Modified for signout action
 ];
 
 function ProfileMenu({ closeMenu, onSignOut }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { user } = useContext(AuthContext);
+
+    const [userData, setUserData] = useState(null); // State for user data
+    // Fetch user data based on email
+    useEffect(() => {
+        const fetchUserData = async () => {
+            if (user?.email) {
+                try {
+                    const { data } = await axios.get("http://localhost:5000/signup");
+                    const matchedUser = data.find((u) => u.email === user.email);
+                    if (matchedUser) {
+                        console.log(matchedUser); // Log the matched user data
+                        setUserData(matchedUser); // Save matched user data to state
+                    }
+                } catch (error) {
+                    console.error("Error fetching user data:", error);
+                }
+            }
+        };
+        fetchUserData();
+    }, [user]);
+
 
     return (
         <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
@@ -43,13 +70,13 @@ function ProfileMenu({ closeMenu, onSignOut }) {
                     aria-expanded={isMenuOpen ? "true" : "false"}
                 >
                     {/* Wrap Avatar with Tooltip */}
-                    <Tooltip content={user.displayName || user.email} placement="bottom">
+                    <Tooltip content={userData?.fullName || user.email} placement="bottom">
                         <Avatar
                             variant="circular"
                             size="sm"
                             alt="Profile Avatar"
                             className="border border-gray-900 p-0.5"
-                            src={user?.photoURL || "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"}
+                            src={userData?.image || "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"}
                         />
                     </Tooltip>
                     <ChevronDownIcon
@@ -92,13 +119,11 @@ function ProfileMenu({ closeMenu, onSignOut }) {
         </Menu>
     );
 }
-
-// Nav list component with appropriate icons for routes
 const navListItems = [
-    { label: "Blog", icon: ChevronDownIcon, link: "/blog" },
-    { label: "Contact Us", icon: ChevronDownIcon, link: "/contact" },
-    { label: "Find a Doctor", icon: ChevronDownIcon, link: "/Find_a_Doctor" },
-    { label: "Become a Doctor", icon: ChevronDownIcon, link: "/become-doctor" },
+    { label: "Blog", icon: FaBloggerB, link: "/blog" }, // Using a chat bubble icon for Blog
+    { label: "Contact Us", icon: IoCall, link: "/contact" }, // Using a phone icon for Contact Us
+    { label: "Find a Doctor", icon: FaUsersLine, link: "/Find_a_Doctor" }, // Using a user icon for Find a Doctor
+    { label: "Become a Doctor", icon: FaUserDoctor, link: "/become-doctor" }, // Using the same user icon for Become a Doctor
 ];
 
 function NavList() {
@@ -121,9 +146,12 @@ const Navbars = () => {
     const { user, logOut } = useContext(AuthContext); // Use context to access user details and logout function
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate(); // To redirect after logging out
+    
 
     const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
+    
 
+   
     // Handle resizing to close the mobile menu on desktop
     useEffect(() => {
         const handleResize = () => {
@@ -134,6 +162,9 @@ const Navbars = () => {
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
+
+
+   
 
     const handleLogout = async () => {
         try {
@@ -146,6 +177,10 @@ const Navbars = () => {
             setIsLoading(false);
         }
     };
+
+    console.log(user)
+
+
 
     return (
         <Navbar className="mx-auto max-w-screen-2xl p-2 lg:bg-white shadow-lg">

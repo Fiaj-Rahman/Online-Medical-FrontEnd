@@ -10,6 +10,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../Firebase/firebase.confiq"; // Ensure path is correct
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 // Create Context for authentication
 export const AuthContext = createContext(null);
@@ -79,25 +80,40 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  // Google Login function
-  const googleLogin = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
-      setError(null); // Clear error on successful Google login
-    } catch (error) {
-      setError(translateError(error.code)); // Set error message if Google login fails
-    }
-  };
+//  // Google Login function
+// const googleLogin = async () => {
+//   try {
+//     const userCredential = await signInWithPopup(auth, googleProvider);
+//     const user = userCredential.user;
+//     return user;  // Make sure to return the user data from the Google login
+//   } catch (error) {
+//     setError(translateError(error.code)); // Handle error
+//     throw error; // Throw error to handle it properly in the component
+//   }
+// };
+
 
   // Log Out function
-  const logOut = async () => {
-    try {
-      await signOut(auth);
-      setError(null); // Clear error on successful logout
-    } catch (error) {
-      setError(translateError(error.code)); // Set error message if logout fails
+ // Log Out function
+const logOut = async () => {
+  try {
+
+    // Sign out from Firebase
+    await signOut(auth);
+      // Send GET request to the backend server to clear session cookies
+      await axios.get('http://localhost:5000/logout', { withCredentials: true });
+    // Clear any error on successful logout
+    setError(null);
+  } catch (error) {
+    // Handle Firebase error and set error message
+    if (error.code) {
+      setError(translateError(error.code)); // Firebase-specific error
+    } else {
+      setError('An error occurred during logout. Please try again.'); // Generic error message
     }
-  };
+  }
+};
+
 
   // Password Reset function
   const resetPass = async (email) => {
@@ -109,14 +125,34 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  // Use Firebase's onAuthStateChanged to monitor the user's login state
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-      setUser(currentUser); // Set the user if logged in, null if logged out
+      setUser(currentUser);
+      // if (currentUser) {
+      //   saveUser(currentUser);
+      // }
     });
 
-    return () => unsubscribe(); // Cleanup the listener on component unmount
+    return () => unsubscribe();
   }, []);
+  
+
+  // const saveUser = async (user) => {
+  //   if (user) {
+  //     const currentUser = {
+  //       fullName: user.displayName,
+  //       email: user.email,
+  //       phoneNumber: 'N/A',
+  //       nationality: 'N/A',
+  //       image: user.photoURL,
+  //       password: 'N/A',
+  //     };
+  //     const { data } = await axios.put('http://localhost:5000/googleuser', currentUser);
+  //     return data;
+  //   }
+  // };
+
 
   // Context value to share with children components
   const authInfo = {
@@ -124,7 +160,6 @@ const AuthProvider = ({ children }) => {
     loginUser,
     user,
     setUser,
-    googleLogin,
     logOut,
     error, // Share the error state with children components
     resetPass,

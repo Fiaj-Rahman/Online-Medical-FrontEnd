@@ -14,6 +14,7 @@ import DoctorDetailsPage from "../../Pages/FindDoctor/FindDoctorComponent/Doctor
 import Login from "../Authentication/Login/Login";
 import SignUp from "../Authentication/SignUp/SignUp";
 import PrivateRoute from "./../Authentication/PrivateRoute/PrivateRoute"
+import Doctor_Management from "../../UserDashboard/UserDashboardComponent/Doctor_Management/Doctor_Management";
 
 
 export const router = createBrowserRouter([
@@ -73,7 +74,12 @@ export const router = createBrowserRouter([
             {
                 path:"profile",
                 element:<UserProfile></UserProfile>
-            }
+            },
+            {
+                path:"Doctor-Management",
+                element:<Doctor_Management></Doctor_Management>
+            },
+           
         ]
     }
 ])

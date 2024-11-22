@@ -1,280 +1,222 @@
 import React, { useState, useEffect } from "react";
-import { Parallax } from 'react-parallax';
-import doctorData from './../../../Component/FileJson/Doctor.json';
-import { FaSearch, FaStar } from 'react-icons/fa';
-import { useNavigate, useParams } from "react-router-dom";
+import { Parallax } from "react-parallax";
+import { FaSearch, FaStar } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const FindDoctorBanner = () => {
     const [doctors, setDoctors] = useState([]);
     const [filteredDoctors, setFilteredDoctors] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState('All');
+    const [selectedCategory, setSelectedCategory] = useState("All");
     const [searchQuery, setSearchQuery] = useState("");
     const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(10000);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [doctorsPerPage] = useState(6);
-    const [sortByRating, setSortByRating] = useState(false);
+    const [maxPrice, setMaxPrice] = useState(100000);
     const [ratingFilter, setRatingFilter] = useState("All");
-    const { doctorId } = useParams();  // Fetch the doctorId from the URL params
+    const [priceSortOrder, setPriceSortOrder] = useState("asc");
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const doctorsPerPage = 6;
+
     const navigate = useNavigate();
 
-    const handleDetailsClick = (id) => {
-        navigate(`/doctor-details/${id}`);
-    };
     useEffect(() => {
-        setDoctors(doctorData);
-        setFilteredDoctors(doctorData);
+        fetch("http://localhost:5000/doctors")
+            .then((response) => response.json())
+            .then((data) => {
+                const approvedDoctors = data.filter((doctor) => doctor.approval === "true");
+                setDoctors(approvedDoctors);
+                setFilteredDoctors(approvedDoctors);
 
-        const uniqueCategories = [
-            'All',
-            ...new Set(doctorData.map((doctor) => doctor.category))
-        ];
-        setCategories(uniqueCategories);
+                const uniqueCategories = ["All", ...new Set(approvedDoctors.map((doc) => doc.specialization))];
+                setCategories(uniqueCategories);
+            })
+            .catch((error) => console.error("Error fetching doctors:", error));
     }, []);
 
     useEffect(() => {
-        // Reset filters when component mounts to show all doctors
-        setSelectedCategory('All');
-        setSearchQuery('');
-        setMinPrice(0);
-        setMaxPrice(10000);
-        setSortByRating(false);
-        setRatingFilter("All");
-    }, []); // Empty dependency array ensures this only runs on component mount
+        let filtered = [...doctors];
 
-    useEffect(() => {
-        filterDoctors(); // Reapply filters whenever any of the filter criteria change
-    }, [selectedCategory, searchQuery, minPrice, maxPrice, sortByRating, ratingFilter]);
-
-    const filterDoctors = () => {
-        let filtered = doctors;
-
-        // Apply category filter (only if a category is selected, otherwise show all)
-        if (selectedCategory !== 'All') {
-            filtered = filtered.filter(doctor => doctor.category === selectedCategory);
+        if (selectedCategory !== "All") {
+            filtered = filtered.filter((doc) => doc.specialization === selectedCategory);
         }
 
-        // Apply price range filter
-        filtered = filtered.filter(doctor => {
-            const doctorPrice = parseInt(doctor.price, 10);
+        filtered = filtered.filter((doc) => {
+            const doctorPrice = parseFloat(doc.visit) || 0;
             return doctorPrice >= minPrice && doctorPrice <= maxPrice;
         });
 
-        // Apply search filter
-        if (searchQuery) {
-            filtered = filtered.filter(doctor =>
-                doctor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                doctor.specialty.toLowerCase().includes(searchQuery.toLowerCase())
+        if (ratingFilter !== "All") {
+            const [minRating] = ratingFilter.split("-").map(Number);
+            filtered = filtered.filter((doc) => doc.rating >= minRating);
+        }
+
+        if (searchQuery.trim()) {
+            filtered = filtered.filter(
+                (doc) =>
+                    doc.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    doc.specialization.toLowerCase().includes(searchQuery.toLowerCase())
             );
         }
 
-        // Apply rating filter
-        if (ratingFilter !== "All") {
-            const [minRating, maxRating] = ratingFilter.split("-").map(Number);
-            filtered = filtered.filter(doctor => doctor.rating >= minRating && doctor.rating <= (maxRating || minRating));
-        }
-
-        // Apply sort by rating
-        if (sortByRating) {
-            filtered.sort((a, b) => b.rating - a.rating);
+        if (priceSortOrder === "asc") {
+            filtered.sort((a, b) => parseFloat(a.visit) - parseFloat(b.visit));
+        } else if (priceSortOrder === "desc") {
+            filtered.sort((a, b) => parseFloat(b.visit) - parseFloat(a.visit));
         }
 
         setFilteredDoctors(filtered);
-    };
+    }, [doctors, selectedCategory, searchQuery, minPrice, maxPrice, ratingFilter, priceSortOrder]);
 
-    const handleCategoryChange = (category) => {
-        setSelectedCategory(category);
-    };
+    const handleDetailsClick = (id) => navigate(`/doctor-details/${id}`);
 
-    const handleSearchChange = (event) => {
-        setSearchQuery(event.target.value);
-    };
-
-    const handlePriceRangeChange = (event) => {
-        const { name, value } = event.target;
-        if (name === "minPrice") {
-            setMinPrice(value);
-        } else {
-            setMaxPrice(value);
-        }
-    };
-
-    const handleSortByRatingChange = (event) => {
-        setSortByRating(event.target.checked);
-    };
-
-    const handleRatingFilterChange = (event) => {
-        setRatingFilter(event.target.value);
+    const renderStars = (rating) => {
+        return Array.from({ length: 5 }, (_, i) => (
+            <FaStar
+                key={i}
+                className={`w-5 h-5 ${i < rating ? "text-yellow-400" : "text-gray-300"}`}
+            />
+        ));
     };
 
     const indexOfLastDoctor = currentPage * doctorsPerPage;
     const indexOfFirstDoctor = indexOfLastDoctor - doctorsPerPage;
     const currentDoctors = filteredDoctors.slice(indexOfFirstDoctor, indexOfLastDoctor);
 
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    const totalPages = Math.ceil(filteredDoctors.length / doctorsPerPage);
 
-    const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(filteredDoctors.length / doctorsPerPage); i++) {
-        pageNumbers.push(i);
-    }
-
-    const renderStars = (rating) => {
-        const stars = [];
-        for (let i = 1; i <= 5; i++) {
-            stars.push(
-                <FaStar key={i} className={`w-5 h-5 ${i <= rating ? 'text-yellow-400' : 'text-gray-300'}`} />
-            );
-        }
-        return stars;
-    };
+    const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
         <div className="bg-gray-100 overflow-hidden">
-            <Parallax
-                className="parallax-banner h-screen"
-                bgImage="./slider02.jpg"
-                strength={300}
-            >
-                <div className="py-20 text-center text-white relative h-screen bg-black bg-opacity-50 flex items-center justify-center">
-                    <div className="text-center px-4 md:px-10">
-                        <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6 leading-tight">
-                            Find a Doctor That Fits Your Needs
-                        </h1>
-                        <p className="text-xs sm:text-sm md:text-lg lg:text-xl text-gray-300 mb-6 max-w-xl mx-auto">
-                            Search from a wide range of doctors across various specialties to find the best care for you and your loved ones.
-                        </p>
-                        <div className="flex justify-center items-center max-w-md mx-auto mt-5 relative">
-                            <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
-                            <input
-                                type="text"
-                                placeholder="Search for doctors..."
-                                value={searchQuery}
-                                onChange={handleSearchChange}
-                                className="p-4 pl-10 w-full rounded-lg text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-md"
-                            />
-                        </div>
+            <Parallax className="parallax-banner h-screen" bgImage="./slider02.jpg" strength={300}>
+                <div className="h-screen flex flex-col justify-center items-center bg-black bg-opacity-50 text-center">
+                    <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">Find Your Doctor</h1>
+                    <p className="text-gray-300 text-sm sm:text-lg mb-6 max-w-lg">
+                        Search from a wide range of doctors across various specialties.
+                    </p>
+                    <div className="relative w-3/4 sm:w-1/2">
+                        <FaSearch className="absolute left-3 top-3 text-gray-500" />
+                        <input
+                            type="text"
+                            placeholder="Search doctors..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full p-3 pl-10 rounded-lg shadow-md text-black focus:ring-2 focus:ring-indigo-500"
+                        />
                     </div>
                 </div>
             </Parallax>
 
-            <div className="flex py-8 px-4 sm:px-6 md:px-12">
-                <div className="w-full sm:w-1/4  px-2 mb-6 sm:mb-0">
-                    <h2 className="font-semibold text-lg sm:text-xl md:text-2xl mt-6 mb-4">Sort by Rating</h2>
-                    <div className="flex items-center">
-                        <input
-                            type="checkbox"
-                            id="sortByRating"
-                            checked={sortByRating}
-                            onChange={handleSortByRatingChange}
-                            className="mr-2"
-                        />
-                        <label htmlFor="sortByRating" className="text-sm sm:text-lg">Sort by rating (highest first)</label>
+            <div className="py-10 px-4 sm:px-10">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                    <div className="lg:col-span-1 bg-white p-6 rounded-lg shadow-md">
+                        <h2 className="text-xl font-semibold mb-4">Filters</h2>
+                        <h3 className="text-lg font-medium mb-2">Specialization</h3>
+                        <ul className="space-y-2">
+                            {categories.map((cat) => (
+                                <li
+                                    key={cat}
+                                    className={`cursor-pointer p-2 rounded ${
+                                        selectedCategory === cat ? "bg-blue-100 text-blue-700" : "bg-gray-100"
+                                    }`}
+                                    onClick={() => setSelectedCategory(cat)}
+                                >
+                                    {cat}
+                                </li>
+                            ))}
+                        </ul>
+
+                        <h3 className="text-lg font-medium mt-6 mb-2">Price Range</h3>
+                        <div className="flex flex-col gap-2">
+                            <input
+                                type="number"
+                                value={minPrice}
+                                onChange={(e) => setMinPrice(Number(e.target.value))}
+                                className="p-2 border rounded"
+                                placeholder="Min Price"
+                            />
+                            <input
+                                type="number"
+                                value={maxPrice}
+                                onChange={(e) => setMaxPrice(Number(e.target.value))}
+                                className="p-2 border rounded"
+                                placeholder="Max Price"
+                            />
+                        </div>
+
+                        <h3 className="text-lg font-medium mt-6 mb-2">Sort by Price</h3>
+                        <div className="flex gap-2">
+                            <button
+                                onClick={() => setPriceSortOrder("asc")}
+                                className={`px-4 py-2 rounded ${priceSortOrder === "asc" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+                            >
+                                Low to High
+                            </button>
+                            <button
+                                onClick={() => setPriceSortOrder("desc")}
+                                className={`px-4 py-2 rounded ${priceSortOrder === "desc" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+                            >
+                                High to Low
+                            </button>
+                        </div>
+
+                        <h3 className="text-lg font-medium mt-6 mb-2">Rating</h3>
+                        <select
+                            value={ratingFilter}
+                            onChange={(e) => setRatingFilter(e.target.value)}
+                            className="w-full p-2 rounded border"
+                        >
+                            <option value="All">All Ratings</option>
+                            <option value="4-5">4 stars & above</option>
+                            <option value="3-5">3 stars & above</option>
+                            <option value="2-5">2 stars & above</option>
+                        </select>
                     </div>
 
-                    <h2 className="font-semibold text-lg sm:text-xl md:text-2xl mt-6 mb-4">Price Range</h2>
-                    <div className="mb-6">
-                        <label htmlFor="minPrice" className="text-sm sm:text-lg md:text-xl block mb-2">Min Price: {minPrice} BDT</label>
-                        <input
-                            type="range"
-                            id="minPrice"
-                            name="minPrice"
-                            min="0"
-                            max="10000"
-                            value={minPrice}
-                            onChange={handlePriceRangeChange}
-                            className="w-full"
-                        />
-                    </div>
-
-                    <div className="mb-6">
-                        <label htmlFor="maxPrice" className="text-sm sm:text-lg md:text-xl block mb-2">Max Price: {maxPrice} BDT</label>
-                        <input
-                            type="range"
-                            id="maxPrice"
-                            name="maxPrice"
-                            min="0"
-                            max="10000"
-                            value={maxPrice}
-                            onChange={handlePriceRangeChange}
-                            className="w-full"
-                        />
-                    </div>
-
-                    <h2 className="font-semibold text-lg sm:text-xl md:text-2xl mb-4">Categories</h2>
-                    <div className="space-y-3">
-                        {categories.map((category) => (
-                            <div key={category} className="flex items-center">
-                                <input
-                                    type="radio"
-                                    id={category}
-                                    name="category"
-                                    checked={selectedCategory === category}
-                                    onChange={() => handleCategoryChange(category)}
-                                    className="mr-2"
-                                />
-                                <label htmlFor={category} className="text-sm sm:text-lg md:text-xl">{category}</label>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                <div className="w-full sm:w-3/4">
-                    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {currentDoctors.length > 0 ? currentDoctors.map((doctor) => (
-                            <div key={doctor.id} className="bg-white shadow-lg rounded-lg overflow-hidden">
-                                <img src={doctor.image} alt={doctor.name} className="w-full h-56 object-cover" />
-                                <div className="p-4">
-                                    <h3 className="font-semibold text-lg sm:text-xl">{doctor.name}</h3>
-                                    <p className="text-sm sm:text-md text-gray-600">{doctor.specialty}</p>
-                                    <div className="flex items-center my-2">
-                                        {renderStars(doctor.rating)}
-                                    </div>
-                                    <p className="text-sm sm:text-md text-gray-500 mb-3">{doctor.experience} years of experience</p>
-                                    <p className="text-lg sm:text-xl font-semibold">{doctor.price} BDT</p>
-                                    <button
-                                        onClick={() => handleDetailsClick(doctor.id)}
-                                        className="px-6 w-full mt-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 ease-in-out transform hover:scale-105"
-                                    >
-                                        Details
-                                    </button>
-                                </div>
-                            </div>
-                        )) : (
-                            <div className="flex justify-center w-full h-screen items-center text-center m-auto">
-                                <div className="max-w-md w-full bg-white shadow-lg rounded-lg overflow-hidden">
-                                    <div className="relative">
-                                        <iframe
-                                            src="https://lottie.host/embed/4ee38469-2579-4d50-85b6-64d504e32831/uBSFYrb58r.json"
-                                            frameBorder="0"
-                                            className="w-full h-72 sm:h-96 rounded-lg"
-                                            title="Animation"
-                                        ></iframe>
-                                        <div className="absolute inset-0 bg-black bg-opacity-25 rounded-lg"></div>
-                                    </div>
-                                    <div className="p-4">
-                                        <p className="text-center text-lg sm:text-xl text-gray-600">No doctors found based on the filters.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                        )}
-                    </div>
-                    <div className="flex justify-center mt-8">
-                        <nav>
-                            <ul className="flex list-style-none">
-                                {pageNumbers.map(number => (
-                                    <li key={number} className="page-item">
+                    <div className="lg:col-span-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {currentDoctors.length > 0 ? (
+                                currentDoctors.map((doc) => (
+                                    <div key={doc._id} className="bg-white rounded-lg shadow-md p-4">
+                                        <img
+                                            src={doc.profileImage}
+                                            alt={doc.fullName}
+                                            className="w-full h-40 object-cover rounded-lg"
+                                        />
+                                        <h3 className="text-lg font-bold mt-4">{doc.fullName}</h3>
+                                        <p className="text-gray-500">{doc.specialization}</p>
+                                        <div className="flex items-center mt-2">{renderStars(doc.rating)}</div>
+                                        <p className="mt-2 text-gray-600">{doc.visit} BDT</p>
                                         <button
-                                            onClick={() => paginate(number)}
-                                            className="px-4 py-2 mx-1 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
+                                            onClick={() => handleDetailsClick(doc._id)}
+                                            className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
                                         >
-                                            {number}
+                                            View Details
                                         </button>
-                                    </li>
+                                    </div>
+                                ))
+                            ) : (
+                                <p className="text-center text-gray-500 col-span-full">
+                                    No doctors found matching the criteria.
+                                </p>
+                            )}
+                        </div>
+
+                        {totalPages > 1 && (
+                            <div className="mt-6 flex justify-center">
+                                {Array.from({ length: totalPages }, (_, i) => (
+                                    <button
+                                        key={i}
+                                        onClick={() => handlePageChange(i + 1)}
+                                        className={`mx-1 px-3 py-1 rounded ${
+                                            currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200"
+                                        }`}
+                                    >
+                                        {i + 1}
+                                    </button>
                                 ))}
-                            </ul>
-                        </nav>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

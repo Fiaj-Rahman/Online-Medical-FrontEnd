@@ -1,9 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../AuthProvider/AuthProvider"; // Ensure the path is correct
+import axios from "axios";
 
 const Login = () => {
-  const { loginUser, googleLogin, user, resetPass } = useContext(AuthContext);
+  const { loginUser, user, resetPass } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -20,7 +21,7 @@ const Login = () => {
 
   const redirectPath = location.state?.from || "/"; // Redirect to previous page or home if not available
 
-  // Validate form data
+  // Validate form data (Email validation function)
   const validateForm = (formData) => {
     const newErrors = {};
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
@@ -33,6 +34,12 @@ const Login = () => {
       newErrors.password = "Password is required";
     }
     return newErrors;
+  };
+
+  // Validate reset email (for password reset modal)
+  const validateResetEmail = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return emailRegex.test(email);
   };
 
   // Handle form submission (Login)
@@ -48,36 +55,52 @@ const Login = () => {
       try {
         setLoading(true);
         await loginUser(email, password);
+
+        const { data } = await axios.post(
+          'http://localhost:5000/jwt',
+          { email },
+          { withCredentials: true }
+        );
+
         setLoading(false);
-        navigate(redirectPath);
+        navigate(redirectPath); // Redirect after successful login
+        return data;
       } catch (error) {
         setLoading(false);
         setErrors({
           email: "",
           password: "",
-          general: error.message,
+          general: error.message || "Something went wrong. Please try again.",
         });
       }
     }
   };
 
-  // Handle Google login
-  const handleGoogleLogin = async () => {
-    try {
-      setLoading(true);
-      await googleLogin();
-      setLoading(false);
-      navigate(redirectPath);
-    } catch (error) {
-      setLoading(false);
-      setErrors({
-        email: "",
-        password: "",
-        general: error.message,
-      });
-    }
-  };
 
+  // const handleGoogleLogin = async () => {
+  //   try {
+  //     setLoading(true);
+      
+  //     // Call the googleLogin function from context
+  //     const user = await googleLogin();  // This now checks the email before proceeding with login
+  
+  //     // If successful, redirect the user
+  //     navigate(redirectPath);
+  
+  //     setLoading(false);  // Stop loading state after successful login
+  //   } catch (error) {
+  //     setLoading(false);  // Stop loading state if there is an error
+  //     setErrors({
+  //       general: error.message || "Something went wrong. Please try again.",
+  //     });
+  //   }
+  // };
+  
+
+  
+  
+  
+  
   // Handle input change (clear individual field error)
   const handleInputChange = (e) => {
     const { name } = e.target;
@@ -90,25 +113,33 @@ const Login = () => {
   // Handle password reset form submission
   const handleResetPassword = async (e) => {
     e.preventDefault();
-    if (!resetEmail) {
-      setResetErrors("Please enter an email.");
+    if (!resetEmail || !validateResetEmail(resetEmail)) {
+      setResetErrors("Please enter a valid email.");
       return;
     }
     try {
       await resetPass(resetEmail);
-      setResetErrors("");
+      setResetErrors(""); // Clear errors after successful submission
       setShowModal(false); // Close modal on success
     } catch (error) {
-      setResetErrors(error.message);
+      setResetErrors(error.message || "An error occurred. Please try again.");
     }
   };
 
   // Redirect to the previous page if the user is already logged in
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     if (user) {
       navigate(redirectPath);
+    } else {
+      setIsLoading(false);
     }
   }, [user, navigate, redirectPath]);
+
+  if (isLoading) {
+    return <div>Loading...</div>; // Optionally, a loading spinner or message
+  }
 
   return (
     <div className="flex flex-col md:flex-row bg-gradient-to-r from-blue-500 to-purple-600 min-h-screen">
@@ -128,7 +159,7 @@ const Login = () => {
 
           {/* Display general error message */}
           {errors.general && (
-            <div className="mb-4 text-red-400 text-center">{errors.general}</div>
+            <div className="mb-4 text-red-400 text-center font-medium">{errors.general}</div>
           )}
 
           <form onSubmit={handleSubmit} noValidate className="space-y-6">
@@ -183,33 +214,33 @@ const Login = () => {
             </button>
           </form>
 
-          <div className="flex items-center pt-4 space-x-1">
+          {/* <div className="flex items-center pt-4 space-x-1">
             <div className="flex-1 h-px sm:w-16 bg-gray-300"></div>
             <p className="px-3 text-sm text-gray-400">Login with social accounts</p>
             <div className="flex-1 h-px sm:w-16 bg-gray-300"></div>
-          </div>
+          </div> */}
 
           {/* Social Login Buttons */}
-          <div className="flex justify-center space-x-4">
+          {/* <div className="flex justify-center space-x-4">
             <button
               aria-label="Log in with Google"
               className="p-3 rounded-full bg-white shadow hover:bg-gray-100 focus:outline-none"
               disabled={loading}
               onClick={handleGoogleLogin}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 32 32"
-                className="w-6 h-6 fill-current text-gray-700"
-              >
-                <path d="M16.318 13.714v5.484h9.078c-0.37 2.354-2.745 6.901-9.078 6.901-5.458 0-9.917-4.521-9.917-10.099s4.458-10.099 9.917-10.099c3.109 0 5.193 1.318 6.38 2.464l4.339-4.182c-2.786-2.599-6.396-4.182-10.719-4.182-8.844 0-16 7.151-16 16s7.156 16 16 16c9.234 0 15.365-6.49 15.365-15.635 0-1.052-0.115-1.854-0.255-2.651z"></path>
-              </svg>
+              {loading ? (
+                <span className="animate-spin w-5 h-5 border-4 border-t-4 border-white rounded-full"></span>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="w-6 h-6 fill-current text-gray-700">
+                  <path d="M16.318 13.714v5.484h9.078c-0.37 2.354-2.745 6.901-9.078 6.901-5.458 0-9.917-4.521-9.917-10.099s4.458-10.099 9.917-10.099c3.109 0 5.193 1.318 6.38 2.464l4.339-4.182c-2.786-2.599-6.396-4.182-10.719-4.182-8.844 0-16 7.151-16 16s7.156 16 16 16c9.234 0 15.365-6.49 15.365-15.635 0-1.052-0.115-1.854-0.255-2.651z"></path>
+                </svg>
+              )}
             </button>
-          </div>
+          </div> */}
 
           <p className="text-xs text-center sm:px-6 text-gray-400">
             Don't have an account?{" "}
-            <Link className="underline text-indigo-600" to="/signUp">
+            <Link className="underline text-indigo-600 font-bold" to="/signUp">
               Sign up
             </Link>
           </p>
@@ -230,9 +261,7 @@ const Login = () => {
                   placeholder="Enter your email"
                   className="w-full px-4 py-2 border-2 rounded-md border-gray-300"
                 />
-                {resetErrors && (
-                  <span className="text-xs text-red-400">{resetErrors}</span>
-                )}
+                {resetErrors && <span className="text-xs text-red-400">{resetErrors}</span>}
                 <div className="flex justify-between">
                   <button
                     type="button"

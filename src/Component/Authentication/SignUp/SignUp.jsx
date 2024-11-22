@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../AuthProvider/AuthProvider";
 import { toast } from "react-toastify"; // Assuming you're using react-toastify for error messages
+import axios from "axios";
 
 const SignUp = () => {
   const { signUpUser, setUser } = useContext(AuthContext);
@@ -67,7 +68,6 @@ const SignUp = () => {
     return newErrors;
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -79,13 +79,15 @@ const SignUp = () => {
     const image = e.target.image.files[0];  // For file input, use `files[0]`
     const password = e.target.password.value;
     const confirmPassword = e.target.confirmPassword.value;
+    const role = "user";
 
     const formData = {
       fullName,
       email,
       phoneNumber,
       nationality,
-      image,
+      role,
+      image,  // Store the image file here
       password,
       confirmPassword,
     };
@@ -100,19 +102,45 @@ const SignUp = () => {
         setLoading(true);  // Start loading state
         setErrors({ ...errors, general: "" }); // Reset general errors before submission
 
-        // Await the signUpUser function and get the result
-        const result = await signUpUser(email, password);
+        // Upload image to ImgBB
+        const imageformData = new FormData();
+        imageformData.append('image', image);
+        const { data } = await axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_APIKEY}`, imageformData);
+        const imageUrl = data.data.display_url;
 
-        // Once signUp is successful, set the user context
-        setUser(result.user);  // Assuming result contains the user object
+        // Create the user data object with the image URL
+        const userData = {
+          fullName,
+          email,
+          phoneNumber,
+          nationality,
+          role,
+          image: imageUrl,  // Use the image URL from ImgBB
+          password,
+          confirmPassword,
+        };
 
-        setLoading(false);  // Stop loading state
-        toast.success("Signup successful!");  // Show success message
-        navigate("/");  // Redirect to homepage/dashboard (or any other page)
+        // Send data to backend to create a new user
+        const response = await axios.post('http://localhost:5000/signup', userData, {
+          withCredentials: true,  // Important if you're using cookies
+        });
+
+        if (response.data.success) {
+          // Proceed with signup using the signUpUser function
+          const result = await signUpUser(email, password);
+
+          // Once signUp is successful, set the user context
+          setUser(result.user);  // Assuming result contains the user object
+
+          setLoading(false);  // Stop loading state
+          toast.success("Signup successful!");  // Show success message
+          navigate("/login");  // Redirect to homepage/dashboard (or any other page)
+        }
 
         // Reset form after successful signup
         e.target.reset();
         setImagePreview(null);  // Clear image preview
+        setLoading(false);  // Stop loading state
       } catch (error) {
         setLoading(false);  // Stop loading state
         setErrors({ ...errors, general: error.message });  // Set general error message if any
@@ -127,14 +155,17 @@ const SignUp = () => {
     if (file) {
       if (file.size > 2 * 1024 * 1024) { // Limit to 2MB
         setErrors({ ...errors, image: "File size exceeds 2MB" });
+        setImagePreview(null);  // Clear preview on error
       } else if (!file.type.startsWith("image/")) { // Check if it's an image file
         setErrors({ ...errors, image: "Only image files are allowed" });
+        setImagePreview(null);  // Clear preview on error
       } else {
         setErrors({ ...errors, image: "" });  // Clear error if valid image
         setImagePreview(URL.createObjectURL(file));
       }
     }
   };
+
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-700 via-indigo-800 to-purple-900">
@@ -143,7 +174,8 @@ const SignUp = () => {
 
         {/* Display General Error */}
         {errors.general && (
-          <div className="mb-4 text-red-400 text-center">{errors.general}</div>
+          // <div className="mb-4 text-red-400 text-center">{errors.general}</div>
+          <div className="mb-4 text-red-400 text-center"><span>A verification email has been sent to your email address. Please verify your email and log in.</span></div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
