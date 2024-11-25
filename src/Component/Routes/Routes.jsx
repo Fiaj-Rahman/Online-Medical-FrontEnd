@@ -15,6 +15,8 @@ import Login from "../Authentication/Login/Login";
 import SignUp from "../Authentication/SignUp/SignUp";
 import PrivateRoute from "./../Authentication/PrivateRoute/PrivateRoute"
 import Doctor_Management from "../../UserDashboard/UserDashboardComponent/Doctor_Management/Doctor_Management";
+import Blog_Post from "../../UserDashboard/UserDashboardComponent/Blog_Post/Blog_Post";
+import BlogDetails from "../../Pages/Blog/BlogComponent/BlogDetails";
 
 
 export const router = createBrowserRouter([
@@ -30,6 +32,10 @@ export const router = createBrowserRouter([
             {
                 path:"/blog",
                 element:<BlogPage></BlogPage>
+            },
+            {
+                path:"/blog/:id",
+                element:<BlogDetails></BlogDetails>
             },
             {
                 path: "/Find_a_Doctor",
@@ -79,6 +85,10 @@ export const router = createBrowserRouter([
                 path:"Doctor-Management",
                 element:<Doctor_Management></Doctor_Management>
             },
+            {
+                path:"Blog-Post",
+                element:<Blog_Post></Blog_Post>
+            }
            
         ]
     }

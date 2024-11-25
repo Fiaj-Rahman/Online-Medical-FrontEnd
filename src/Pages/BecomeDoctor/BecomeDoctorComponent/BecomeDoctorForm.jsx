@@ -1,12 +1,49 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../../../Component/Authentication/AuthProvider/AuthProvider";
 
 const BecomeDoctorForm = () => {
     const { user } = useContext(AuthContext);
+    const [userData, setUserData] = useState(null); // State for user data
+    const [loading, setLoading] = useState(false); // State for loading indicator
+    const [error, setError] = useState(null); // State for error handling
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            if (user?.email) {
+                try {
+                    const { data } = await axios.get("http://localhost:5000/signup");
+                    const matchedUser = data.find((u) => u.email === user.email);
+                    console.log("Matched User Data:", matchedUser); // Ensure image field exists here
+                    if (matchedUser) {
+                        setUserData(matchedUser); // Set userData to state
+                    } else {
+                        setError("User not found.");
+                    }
+                } catch (error) {
+                    setError("Error fetching user data.");
+                    console.error("Error fetching user data:", error);
+                } finally {
+                    setLoading(false);
+                }
+            }
+        };
+        fetchUserData();
+    }, [user]);
+    
+    // Ensure that userData is set before using it in the formData
+    useEffect(() => {
+        if (userData) {
+            setFormData((prevState) => ({
+                ...prevState,
+                userImage: userData?.image || "",  // Ensure the image field exists and is correct
+            }));
+        }
+    }, [userData]); 
 
     const [formData, setFormData] = useState({
         userEmail: user?.email || "",
+        userImage: userData?.image || "",
         fullName: "",
         dob: "",
         gender: "",
@@ -15,7 +52,7 @@ const BecomeDoctorForm = () => {
         specialization: "",
         experience: "",
         email: "",
-        visit:"",
+        visit: "",
         phone: "",
         highestEducation: "",
         medicalSchool: "",
@@ -32,9 +69,12 @@ const BecomeDoctorForm = () => {
         availableTime: [],
         references: "",
         yourSelf: "",
-        approval:"false"
+        approval: "false"
     });
-   console.log(user?.email)
+
+    // Log user data for debugging
+    console.log(user?.email);
+    console.log(userData?.image);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
