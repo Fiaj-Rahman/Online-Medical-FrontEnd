@@ -44,7 +44,7 @@ function ProfileMenu({ closeMenu, onSignOut }) {
         const fetchUserData = async () => {
             if (user?.email) {
                 try {
-                    const { data } = await axios.get("http://localhost:5000/signup");
+                    const { data } = await axios.get("https://medconnect-eta.vercel.app/signup");
                     const matchedUser = data.find((u) => u.email === user.email);
                     if (matchedUser) {
                         console.log(matchedUser); // Log the matched user data

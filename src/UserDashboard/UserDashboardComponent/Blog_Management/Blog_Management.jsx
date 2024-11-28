@@ -21,7 +21,7 @@ const Blog_Management = () => {
 
         const fetchBlogs = async () => {
             try {
-                const response = await fetch("http://localhost:5000/blog");
+                const response = await fetch("https://medconnect-eta.vercel.app/blog");
                 if (!response.ok) {
                     throw new Error('Failed to fetch blogs');
                 }
@@ -54,7 +54,7 @@ const Blog_Management = () => {
     // Handle save edit (PUT request to backend)
     const handleSaveEdit = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/blogs/${selectedBlog._id}`, {
+            const response = await fetch(`https://medconnect-eta.vercel.app/blogs/${selectedBlog._id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -82,7 +82,7 @@ const Blog_Management = () => {
         const confirmation = window.confirm("Are you sure you want to delete this blog?");
         if (confirmation) {
             try {
-                const response = await fetch(`http://localhost:5000/blogs/${blogId}`, {
+                const response = await fetch(`https://medconnect-eta.vercel.app/blogs/${blogId}`, {
                     method: "DELETE",
                 });
 

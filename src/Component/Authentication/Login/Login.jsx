@@ -57,7 +57,7 @@ const Login = () => {
         await loginUser(email, password);
 
         const { data } = await axios.post(
-          'http://localhost:5000/jwt',
+          'https://medconnect-eta.vercel.app/jwt',
           { email },
           { withCredentials: true }
         );

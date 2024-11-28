@@ -45,7 +45,7 @@ const UserNavBar = (props) => {
       <Toolbar />
       <Divider />
       <List>
-        {['Dashboard', 'Statistic', 'Doctor-Management', 'Blog-Post', 'Blog-Management'].map((text, index) => (
+        {['Statistic', 'Doctor-Management', 'Blog-Post', 'Blog-Management'].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
               <ListItemIcon>
@@ -64,7 +64,7 @@ const UserNavBar = (props) => {
       </List>
       <Divider />
       <List>
-        {['Profile', 'Logout'].map((text, index) => (
+        {['Profile'].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
               <ListItemIcon>

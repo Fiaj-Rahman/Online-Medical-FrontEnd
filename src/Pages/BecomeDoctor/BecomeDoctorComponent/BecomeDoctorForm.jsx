@@ -12,7 +12,7 @@ const BecomeDoctorForm = () => {
         const fetchUserData = async () => {
             if (user?.email) {
                 try {
-                    const { data } = await axios.get("http://localhost:5000/signup");
+                    const { data } = await axios.get("https://medconnect-eta.vercel.app/signup");
                     const matchedUser = data.find((u) => u.email === user.email);
                     console.log("Matched User Data:", matchedUser); // Ensure image field exists here
                     if (matchedUser) {
@@ -104,7 +104,7 @@ const BecomeDoctorForm = () => {
         const data = { ...formData };
     
         try {
-            const response = await axios.post("http://localhost:5000/doctors", data, {
+            const response = await axios.post("https://medconnect-eta.vercel.app/doctors", data, {
                 headers: {
                     'Content-Type': 'application/json', // Ensure you're sending JSON
                 },

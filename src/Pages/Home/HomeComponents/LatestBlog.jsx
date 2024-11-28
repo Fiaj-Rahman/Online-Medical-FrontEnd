@@ -8,7 +8,7 @@ const LatestBlog = () => {
     // Fetch the latest 4 blog posts from the API
     const fetchBlogs = async () => {
       try {
-        const response = await fetch('http://localhost:5000/blog');
+        const response = await fetch('https://medconnect-eta.vercel.app/blog');
         const data = await response.json();
         
         // Assuming the API returns blogs sorted by creation date

@@ -18,7 +18,7 @@ const BlogPost = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch("http://localhost:5000/blog");
+        const response = await fetch("https://medconnect-eta.vercel.app/blog");
         const data = await response.json();
 
         setBlogs(data); // Set all blogs data

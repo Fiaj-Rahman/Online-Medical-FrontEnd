@@ -25,7 +25,7 @@ const Blog_Post = () => {
             if (user?.email) {
                 setLoading(true);
                 try {
-                    const { data } = await axios.get("http://localhost:5000/signup");
+                    const { data } = await axios.get("https://medconnect-eta.vercel.app/signup");
                     const matchedUser = data.find((u) => u.email === user.email);
                     setUserData(matchedUser || {});
                 } catch (error) {
@@ -119,7 +119,7 @@ const Blog_Post = () => {
                 views: view,
             };
 
-            await axios.post("http://localhost:5000/blog", propertyData, {
+            await axios.post("https://medconnect-eta.vercel.app/blog", propertyData, {
                 withCredentials: true,
             });
 

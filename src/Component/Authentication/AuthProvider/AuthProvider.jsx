@@ -101,7 +101,7 @@ const logOut = async () => {
     // Sign out from Firebase
     await signOut(auth);
       // Send GET request to the backend server to clear session cookies
-      await axios.get('http://localhost:5000/logout', { withCredentials: true });
+      await axios.get('https://medconnect-eta.vercel.app/logout', { withCredentials: true });
     // Clear any error on successful logout
     setError(null);
   } catch (error) {
@@ -148,7 +148,7 @@ const logOut = async () => {
   //       image: user.photoURL,
   //       password: 'N/A',
   //     };
-  //     const { data } = await axios.put('http://localhost:5000/googleuser', currentUser);
+  //     const { data } = await axios.put('https://medconnect-eta.vercel.app/googleuser', currentUser);
   //     return data;
   //   }
   // };

@@ -12,7 +12,7 @@ const Appointment = () => {
   // Fetch appointment data from the API
   useEffect(() => {
     if (user?.email) {
-      fetch("http://localhost:5000/order")
+      fetch("https://medconnect-eta.vercel.app/order")
         .then((response) => response.json())
         .then((data) => {
           // Filter appointments where patient email matches the logged-in user's email

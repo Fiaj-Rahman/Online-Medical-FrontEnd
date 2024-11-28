@@ -121,7 +121,7 @@ const SignUp = () => {
         };
 
         // Send data to backend to create a new user
-        const response = await axios.post('http://localhost:5000/signup', userData, {
+        const response = await axios.post('https://medconnect-eta.vercel.app/signup', userData, {
           withCredentials: true,  // Important if you're using cookies
         });
 

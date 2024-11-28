@@ -55,7 +55,7 @@ const Doctor_Management = () => {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/doctors");
+        const response = await axios.get("https://medconnect-eta.vercel.app/doctors");
         // Filter data where approval is "false"
         const unapprovedDoctors = response.data.filter(
           (doctor) => doctor.approval === "false"
@@ -90,7 +90,7 @@ const Doctor_Management = () => {
   
         // Send PUT request to update approval status
         const response = await axios.put(
-          `http://localhost:5000/doctors/${selectedDoctor._id}`, // Make sure _id is a valid ObjectId string
+          `https://medconnect-eta.vercel.app/doctors/${selectedDoctor._id}`, // Make sure _id is a valid ObjectId string
           { approval: "true" }, // Send only the 'approval' field
           { headers: { "Content-Type": "application/json" } }
         );

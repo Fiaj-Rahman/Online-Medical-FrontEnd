@@ -13,7 +13,7 @@ const DoctorDetails = () => {
   const [paymentAmount, setPaymentAmount] = useState('');  // State to handle payment input
 
   useEffect(() => {
-    fetch(`http://localhost:5000/doctors/${id}`)
+    fetch(`https://medconnect-eta.vercel.app/doctors/${id}`)
       .then((response) => response.json())
       .then((data) => setDoctor(data))
       .catch((error) => console.error("Error fetching doctor:", error));
@@ -57,7 +57,7 @@ const DoctorDetails = () => {
     console.log('Payment Submitted:', paymentData);
   
     // You can then send this data to the backend
-    fetch("http://localhost:5000/order", {
+    fetch("https://medconnect-eta.vercel.app/order", {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(paymentData),

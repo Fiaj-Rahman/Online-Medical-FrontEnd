@@ -20,7 +20,7 @@ const FindDoctorBanner = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch("http://localhost:5000/doctors")
+        fetch("https://medconnect-eta.vercel.app/doctors")
             .then((response) => response.json())
             .then((data) => {
                 const approvedDoctors = data.filter((doctor) => doctor.approval === "true");
