@@ -12,6 +12,7 @@ Currently, two official plugins are available:
 
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,MedConnect,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
+website live link:  https://medconnect-online.web.app/
 
 MedConnect is an innovative online healthcare platform designed to facilitate seamless doctor-patient interactions. The platform enables patients to book appointments with their preferred doctors for online consultations and treatments. Doctors can apply to join MedConnect via a dedicated application page. Once submitted, applications are reviewed and approved by the admin or HR team. Upon approval, doctors are listed on the platform, where patients can choose and schedule appointments.
 
