@@ -30,7 +30,7 @@ import { IoMdNotifications } from "react-icons/io";
 // Profile menu component with appropriate icons for actions
 const profileMenuItems = [
     { label: "Dashboard", icon: MdDashboardCustomize, link: "/dashboard/statistic" },
-    { label: "Notification", icon: IoMdNotifications, link: "/inbox" },
+    { label: "Appointment", icon: IoMdNotifications, link: "/appointment" },
     { label: "Sign Out", icon: PowerIcon, action: "signout" }, // Modified for signout action
 ];
 

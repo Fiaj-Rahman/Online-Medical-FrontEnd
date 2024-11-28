@@ -179,7 +179,7 @@ const FindDoctorBanner = () => {
                                 currentDoctors.map((doc) => (
                                     <div key={doc._id} className="bg-white rounded-lg shadow-md p-4">
                                         <img
-                                            src={doc.profileImage}
+                                            src={doc.userImage}
                                             alt={doc.fullName}
                                             className="w-full h-40 object-cover rounded-lg"
                                         />

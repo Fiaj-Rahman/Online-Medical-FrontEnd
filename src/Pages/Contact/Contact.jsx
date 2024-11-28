@@ -1,7 +1,41 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaMapMarkerAlt, FaEnvelope, FaPhoneAlt } from 'react-icons/fa';
+import Swal from "sweetalert2";
+import { AuthContext } from "../../Component/Authentication/AuthProvider/AuthProvider";
+
+// web3forms user 
 
 const Contact = () => {
+    const { user } = useContext(AuthContext);
+    console.log(user?.email);
+
+    const onSubmit = async (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+
+        formData.append("access_key", "3e90211b-6ef9-4b14-8398-f4e44f2f6de1");
+
+        const object = Object.fromEntries(formData);
+        const json = JSON.stringify(object);
+
+        const res = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json"
+            },
+            body: json
+        }).then((res) => res.json());
+
+        if (res.success) {
+            Swal.fire({
+                title: "Thanks for your feedback!",
+                text: "Message sent successfully!",
+                icon: "success"
+            });
+        }
+    };
+
     return (
         <div className="bg-gray-50 text-gray-900">
             {/* Contact Form Section */}
@@ -16,12 +50,14 @@ const Contact = () => {
                         frameBorder="0"  // Optional: removes iframe border
                     ></iframe>
                 </div>
-                <form noValidate="" className="space-y-6">
+                <form onSubmit={onSubmit} noValidate="" className="space-y-6">
                     <div>
                         <label htmlFor="name" className="text-sm font-semibold text-gray-800">Full Name</label>
                         <input
                             id="name"
                             type="text"
+                            name="name"
+                            required
                             placeholder="Enter your full name"
                             className="w-full p-3 rounded-lg bg-gray-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         />
@@ -31,6 +67,8 @@ const Contact = () => {
                         <input
                             id="email"
                             type="email"
+                            name="email"
+                            required
                             placeholder="Enter your email"
                             className="w-full p-3 rounded-lg bg-gray-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         />
@@ -40,13 +78,17 @@ const Contact = () => {
                         <textarea
                             id="message"
                             rows="4"
+                            name="message"
+                            required
                             placeholder="Type your message"
                             className="w-full p-3 rounded-lg bg-gray-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         ></textarea>
                     </div>
+                    
                     <button
                         type="submit"
                         className="w-full bg-indigo-600 text-white p-3 text-sm font-semibold rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out"
+                        disabled={!user?.email} // Disable the button if user.email is not available
                     >
                         Send Message
                     </button>

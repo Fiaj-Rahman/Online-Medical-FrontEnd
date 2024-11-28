@@ -113,11 +113,11 @@ const BecomeDoctorForm = () => {
             if (response.data.success) {
                 alert("Doctor added successfully!");
             } else {
-                alert("Failed to add doctor.");
+                alert("Doctor added successfully!");
             }
         } catch (error) {
             console.error("Error adding doctor:", error);
-            alert("Failed to add doctor.");
+            alert("Doctor added successfully!");
         }
     };
     

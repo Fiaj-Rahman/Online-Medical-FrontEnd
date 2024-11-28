@@ -17,6 +17,10 @@ import PrivateRoute from "./../Authentication/PrivateRoute/PrivateRoute"
 import Doctor_Management from "../../UserDashboard/UserDashboardComponent/Doctor_Management/Doctor_Management";
 import Blog_Post from "../../UserDashboard/UserDashboardComponent/Blog_Post/Blog_Post";
 import BlogDetails from "../../Pages/Blog/BlogComponent/BlogDetails";
+import Blog_Management from "../../UserDashboard/UserDashboardComponent/Blog_Management/Blog_Management";
+import Payment_Success from "../../Pages/Payment/Payment_Success";
+import Payment_Fail from "../../Pages/Payment/Payment_Fail";
+import Appointment from "../../Pages/Appointment/Appointment";
 
 
 export const router = createBrowserRouter([
@@ -35,7 +39,7 @@ export const router = createBrowserRouter([
             },
             {
                 path:"/blog/:id",
-                element:<BlogDetails></BlogDetails>
+                element:<PrivateRoute><BlogDetails></BlogDetails></PrivateRoute>
             },
             {
                 path: "/Find_a_Doctor",
@@ -43,15 +47,27 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/doctor-details/:id",  // Dynamic route for doctor details
-                element: <DoctorDetailsPage></DoctorDetailsPage>
+                element: <PrivateRoute><DoctorDetailsPage></DoctorDetailsPage></PrivateRoute>
             },
             {
                 path:"/contact",
-                element:<PrivateRoute><Contact></Contact></PrivateRoute>
+                element:<Contact></Contact>
             },
             {
                 path:"/become-doctor",
-                element:<BecomeDoctorPage></BecomeDoctorPage>
+                element:<PrivateRoute><BecomeDoctorPage></BecomeDoctorPage></PrivateRoute>
+            },
+            {
+                path:'/payment/success/:tranId',
+                element:<PrivateRoute><Payment_Success></Payment_Success></PrivateRoute>
+            },
+            {
+                path:'/payment/fail/:tranId',
+                element:<PrivateRoute><Payment_Fail></Payment_Fail></PrivateRoute>
+            },
+            {
+                path:"/appointment",
+                element:<Appointment></Appointment>
             },
             {
                 path: "/login",
@@ -88,6 +104,10 @@ export const router = createBrowserRouter([
             {
                 path:"Blog-Post",
                 element:<Blog_Post></Blog_Post>
+            },
+            {
+                path:"Blog-Management",
+                element: <Blog_Management></Blog_Management>
             }
            
         ]
